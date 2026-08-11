@@ -15,6 +15,11 @@ const characterTypes = Object.keys(characterType) as Array<CharacterType>;
 
 type SpecialAbilities = {};
 
+type Jinx = {
+  id: string;
+  reason: string;
+};
+
 type BotCCharacter = {
   id: string;
   edition: string;
@@ -24,10 +29,12 @@ type BotCCharacter = {
   ability: string;
   setup: boolean;
   reminders: Array<string>;
-  globalReminders: Array<string>;
+  remindersGlobal: Array<string>;
   firstNightReminder?: string;
   otherNightReminder?: string;
   specialAbilities: SpecialAbilities;
+  jinxes?: Array<Jinx>;
+  flavor?: string;
 };
 
 const emptyBotCCharacter: BotCCharacter = {
@@ -39,7 +46,7 @@ const emptyBotCCharacter: BotCCharacter = {
   ability: "",
   setup: false,
   reminders: [],
-  globalReminders: [],
+  remindersGlobal: [],
   specialAbilities: {},
 };
 
@@ -52,6 +59,13 @@ export const CharacterJsonCreatorPage = () => {
       ...characterObject,
       characterName: newName,
       id: `${characterObject.edition}_${newName}`,
+    });
+  };
+
+  const updateAbility = (ability: string) => {
+    setCharacterObject({
+      ...characterObject,
+      ability: ability,
     });
   };
 
@@ -97,7 +111,7 @@ export const CharacterJsonCreatorPage = () => {
     const reminderList = reminders.split("\r\n");
     setCharacterObject({
       ...characterObject,
-      globalReminders: reminderList,
+      remindersGlobal: reminderList,
     });
   };
 
@@ -129,6 +143,13 @@ export const CharacterJsonCreatorPage = () => {
     }
   };
 
+  const updateFlavourText = (newFlavourText: string) => {
+    setCharacterObject({
+      ...characterObject,
+      flavor: newFlavourText,
+    });
+  };
+
   const characterJsonString = JSON.stringify(characterObject);
 
   return (
@@ -141,6 +162,7 @@ export const CharacterJsonCreatorPage = () => {
             type="textbox"
             id="characterName"
             onChange={(e) => updateCharacterName(e.target.value)}
+            maxLength={30}
           ></input>
         </div>
         <div>
@@ -161,10 +183,19 @@ export const CharacterJsonCreatorPage = () => {
           </select>
         </div>
         <div>
+          <label htmlFor="ability">Ability: </label>
+          <input
+            id="ability"
+            onChange={(e) => updateAbility(e.target.value)}
+            maxLength={250}
+          />
+        </div>
+        <div>
           <label htmlFor="edition">Edition: </label>
           <input
             id="edition"
             onChange={(e) => updateCharacterEdition(e.target.value)}
+            maxLength={50}
           ></input>
         </div>
         <div>
@@ -207,6 +238,7 @@ export const CharacterJsonCreatorPage = () => {
         <input
           id="firstNightReminder"
           onChange={(e) => updateFirstNightReminder(e.target.value)}
+          maxLength={500}
         ></input>
       </div>
       <div>
@@ -217,11 +249,16 @@ export const CharacterJsonCreatorPage = () => {
         <input
           id="otherNightReminder"
           onChange={(e) => updateOtherNightReminder(e.target.value)}
+          maxLength={500}
         ></input>
       </div>
       <div>
-        <label htmlFor=""></label>
-        <input id=""></input>
+        <label htmlFor="flavour">Flavour text: </label>
+        <input
+          id="flavour"
+          onChange={(e) => updateFlavourText(e.target.value)}
+          maxLength={500}
+        />
       </div>
       <div>{characterJsonString}</div>
     </>
