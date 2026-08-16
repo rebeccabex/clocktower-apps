@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { TextField } from "./TextField";
 
 const characterType = {
   townsfolk: "Townsfolk",
@@ -37,6 +38,7 @@ type BotCCharacter = {
   jinxes?: Array<Jinx>;
   flavor?: string;
 };
+export type BotCCharacterFieldName = keyof BotCCharacter;
 
 const emptyBotCCharacter: BotCCharacter = {
   id: "",
@@ -52,51 +54,13 @@ const emptyBotCCharacter: BotCCharacter = {
 };
 
 export const CharacterJsonCreatorPage = () => {
-  // const [characterJsonString, updateCharacterJsonString] = useState("{}");
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
-
-  const updateCharacterName = (newName: string) => {
-    setCharacterObject({
-      ...characterObject,
-      characterName: newName,
-      id: `${characterObject.edition}_${newName}`,
-    });
-  };
-
-  const updateAbility = (ability: string) => {
-    setCharacterObject({
-      ...characterObject,
-      ability: ability,
-    });
-  };
-
-  const updateCharacterEdition = (newEdition: string) => {
-    setCharacterObject({
-      ...characterObject,
-      edition: newEdition,
-      id: `${newEdition}_${characterObject.characterName}`,
-    });
-  };
-
-  const updateCharacterType = (newType: CharacterType) => {
-    setCharacterObject({
-      ...characterObject,
-      team: newType,
-    });
-  };
 
   const updateCharacterImageUrls = (urls: string) => {
     const urlList = urls.split("\r\n");
     setCharacterObject({
       ...characterObject,
       imageUrls: urlList,
-    });
-  };
-
-  const updateIsSetup = (isSetup: boolean) => {
-    setCharacterObject({
-      ...characterObject,
-      setup: isSetup,
     });
   };
 
@@ -116,38 +80,13 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
-  const updateFirstNightReminder = (reminder: string) => {
-    if (reminder.length === 0) {
-      setCharacterObject({
-        ...characterObject,
-        firstNightReminder: undefined,
-      });
-    } else {
-      setCharacterObject({
-        ...characterObject,
-        firstNightReminder: reminder,
-      });
-    }
-  };
-
-  const updateOtherNightReminder = (reminder: string) => {
-    if (reminder.length === 0) {
-      setCharacterObject({
-        ...characterObject,
-        otherNightReminder: undefined,
-      });
-    } else {
-      setCharacterObject({
-        ...characterObject,
-        otherNightReminder: reminder,
-      });
-    }
-  };
-
-  const updateFlavourText = (newFlavourText: string) => {
+  const updateField = <T,>(
+    updatedField: BotCCharacterFieldName,
+    newValue: T,
+  ) => {
     setCharacterObject({
       ...characterObject,
-      flavor: newFlavourText,
+      [updatedField]: newValue,
     });
   };
 
@@ -157,22 +96,27 @@ export const CharacterJsonCreatorPage = () => {
     <>
       <div>Create Json for a Clocktower character</div>
       <PageLayout>
-        <Column>
-          <div>
-            <label htmlFor="characterName">Character name: </label>
-            <input
-              type="textbox"
-              id="characterName"
-              onChange={(e) => updateCharacterName(e.target.value)}
-              maxLength={30}
-            ></input>
-          </div>
+        <InputColumn>
+          <TextField
+            fieldName="id"
+            updateField={(newValue: string) => updateField("id", newValue)}
+            maxLength={50}
+            label="Id"
+          />
+          <TextField
+            fieldName="characterName"
+            updateField={(newValue: string) =>
+              updateField("characterName", newValue)
+            }
+            maxLength={30}
+            label="Character name"
+          />
           <div>
             <label htmlFor="characterType">Character type: </label>
             <select
               id="characterType"
               onChange={(e) =>
-                updateCharacterType(e.target.value as CharacterType)
+                updateField("team", e.target.value as CharacterType)
               }
             >
               (
@@ -184,22 +128,18 @@ export const CharacterJsonCreatorPage = () => {
               )
             </select>
           </div>
-          <div>
-            <label htmlFor="ability">Ability: </label>
-            <input
-              id="ability"
-              onChange={(e) => updateAbility(e.target.value)}
-              maxLength={250}
-            />
-          </div>
-          <div>
-            <label htmlFor="edition">Edition: </label>
-            <input
-              id="edition"
-              onChange={(e) => updateCharacterEdition(e.target.value)}
-              maxLength={50}
-            ></input>
-          </div>
+          <TextField
+            fieldName="ability"
+            updateField={(newValue: string) => updateField("ability", newValue)}
+            maxLength={250}
+            label="Ability"
+          />
+          <TextField
+            fieldName="edition"
+            updateField={(newValue: string) => updateField("edition", newValue)}
+            maxLength={50}
+            label="Edition"
+          />
           <div>
             <label htmlFor="imageUrls">
               Image URLs (put each on a separate line):
@@ -214,7 +154,7 @@ export const CharacterJsonCreatorPage = () => {
             <input
               id="isSetup"
               type="checkbox"
-              onChange={(e) => updateIsSetup(e.target.checked)}
+              onChange={(e) => updateField("setup", e.target.checked)}
             />
           </div>
           <div>
@@ -231,38 +171,32 @@ export const CharacterJsonCreatorPage = () => {
               onChange={(e) => updateGlobalReminders(e.target.value)}
             ></input>
           </div>
-          <div>
-            <label htmlFor="firstNightReminder">
-              First Night Reminder: (leave blank if Character doesn't act on the
-              first night)
-            </label>
-            <input
-              id="firstNightReminder"
-              onChange={(e) => updateFirstNightReminder(e.target.value)}
-              maxLength={500}
-            ></input>
-          </div>
-          <div>
-            <label htmlFor="otherNightReminder">
-              Other Night Reminder: (leave blank if Character doesn't act on the
-              nights other than the first)
-            </label>
-            <input
-              id="otherNightReminder"
-              onChange={(e) => updateOtherNightReminder(e.target.value)}
-              maxLength={500}
-            ></input>
-          </div>
-          <div>
-            <label htmlFor="flavour">Flavour text: </label>
-            <input
-              id="flavour"
-              onChange={(e) => updateFlavourText(e.target.value)}
-              maxLength={500}
-            />
-          </div>
-        </Column>
-        <div>{characterJsonString}</div>
+          <TextField
+            fieldName="firstNightReminder"
+            updateField={(newValue: string) =>
+              updateField("firstNightReminder", newValue)
+            }
+            maxLength={500}
+            label="First Night Reminder"
+            helpText="Leave blank if character doesn't act on the first night"
+          />
+          <TextField
+            fieldName="otherNightReminder"
+            updateField={(newValue: string) =>
+              updateField("otherNightReminder", newValue)
+            }
+            maxLength={500}
+            label="Other Night Reminder"
+            helpText="Leave blank if character doesn't wake at night (excluding the first night)"
+          />
+          <TextField
+            fieldName="flavor"
+            updateField={(newValue: string) => updateField("flavor", newValue)}
+            maxLength={50}
+            label="Flavour text"
+          />
+        </InputColumn>
+        <OutputColumn>{characterJsonString}</OutputColumn>
       </PageLayout>
     </>
   );
@@ -273,7 +207,16 @@ const PageLayout = styled.div`
   flex-direction: row;
 `;
 
-const Column = styled.div`
+const InputColumn = styled.div`
   display: flex;
   flex-direction: column;
+  border: 1px solid #000000;
+  width: 50%;
+`;
+
+const OutputColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #000000;
+  width: 50%;
 `;
