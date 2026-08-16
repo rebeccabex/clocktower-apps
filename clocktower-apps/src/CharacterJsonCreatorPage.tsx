@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 const characterType = {
   townsfolk: "Townsfolk",
@@ -155,112 +156,124 @@ export const CharacterJsonCreatorPage = () => {
   return (
     <>
       <div>Create Json for a Clocktower character</div>
-      <div>
-        <div>
-          <label htmlFor="characterName">Character name: </label>
-          <input
-            type="textbox"
-            id="characterName"
-            onChange={(e) => updateCharacterName(e.target.value)}
-            maxLength={30}
-          ></input>
-        </div>
-        <div>
-          <label htmlFor="characterType">Character type: </label>
-          <select
-            id="characterType"
-            onChange={(e) =>
-              updateCharacterType(e.target.value as CharacterType)
-            }
-          >
-            (
-            {characterTypes.map((characterType) => (
-              <option key={characterType} value={characterType}>
-                {characterType}
-              </option>
-            ))}
-            )
-          </select>
-        </div>
-        <div>
-          <label htmlFor="ability">Ability: </label>
-          <input
-            id="ability"
-            onChange={(e) => updateAbility(e.target.value)}
-            maxLength={250}
-          />
-        </div>
-        <div>
-          <label htmlFor="edition">Edition: </label>
-          <input
-            id="edition"
-            onChange={(e) => updateCharacterEdition(e.target.value)}
-            maxLength={50}
-          ></input>
-        </div>
-        <div>
-          <label htmlFor="imageUrls">
-            Image URLs (put each on a separate line):
-          </label>
-          <textarea
-            id="imageUrls"
-            onChange={(e) => updateCharacterImageUrls(e.target.value)}
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="isSetup">Setup?: </label>
-          <input
-            id="isSetup"
-            type="checkbox"
-            onChange={(e) => updateIsSetup(e.target.checked)}
-          />
-        </div>
-        <div>
-          <label htmlFor="characterReminders">Reminders: </label>
-          <input
-            id="characterReminders"
-            onChange={(e) => updateCharacterReminders(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <label htmlFor="globalReminders">Global reminders: </label>
-          <input
-            id="globalReminders"
-            onChange={(e) => updateGlobalReminders(e.target.value)}
-          ></input>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="firstNightReminder">
-          First Night Reminder: (leave blank if Character doesn't act on the
-          first night)
-        </label>
-        <input
-          id="firstNightReminder"
-          onChange={(e) => updateFirstNightReminder(e.target.value)}
-          maxLength={500}
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="otherNightReminder">
-          Other Night Reminder: (leave blank if Character doesn't act on the
-          nights other than the first)
-        </label>
-        <input
-          id="otherNightReminder"
-          onChange={(e) => updateOtherNightReminder(e.target.value)}
-          maxLength={500}
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="flavour">Flavour text: </label>
-        <input
-          id="flavour"
-          onChange={(e) => updateFlavourText(e.target.value)}
-          maxLength={500}
-        />
-      </div>
-      <div>{characterJsonString}</div>
+      <PageLayout>
+        <Column>
+          <div>
+            <label htmlFor="characterName">Character name: </label>
+            <input
+              type="textbox"
+              id="characterName"
+              onChange={(e) => updateCharacterName(e.target.value)}
+              maxLength={30}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="characterType">Character type: </label>
+            <select
+              id="characterType"
+              onChange={(e) =>
+                updateCharacterType(e.target.value as CharacterType)
+              }
+            >
+              (
+              {characterTypes.map((characterType) => (
+                <option key={characterType} value={characterType}>
+                  {characterType}
+                </option>
+              ))}
+              )
+            </select>
+          </div>
+          <div>
+            <label htmlFor="ability">Ability: </label>
+            <input
+              id="ability"
+              onChange={(e) => updateAbility(e.target.value)}
+              maxLength={250}
+            />
+          </div>
+          <div>
+            <label htmlFor="edition">Edition: </label>
+            <input
+              id="edition"
+              onChange={(e) => updateCharacterEdition(e.target.value)}
+              maxLength={50}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="imageUrls">
+              Image URLs (put each on a separate line):
+            </label>
+            <textarea
+              id="imageUrls"
+              onChange={(e) => updateCharacterImageUrls(e.target.value)}
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="isSetup">Setup?: </label>
+            <input
+              id="isSetup"
+              type="checkbox"
+              onChange={(e) => updateIsSetup(e.target.checked)}
+            />
+          </div>
+          <div>
+            <label htmlFor="characterReminders">Reminders: </label>
+            <input
+              id="characterReminders"
+              onChange={(e) => updateCharacterReminders(e.target.value)}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="globalReminders">Global reminders: </label>
+            <input
+              id="globalReminders"
+              onChange={(e) => updateGlobalReminders(e.target.value)}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="firstNightReminder">
+              First Night Reminder: (leave blank if Character doesn't act on the
+              first night)
+            </label>
+            <input
+              id="firstNightReminder"
+              onChange={(e) => updateFirstNightReminder(e.target.value)}
+              maxLength={500}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="otherNightReminder">
+              Other Night Reminder: (leave blank if Character doesn't act on the
+              nights other than the first)
+            </label>
+            <input
+              id="otherNightReminder"
+              onChange={(e) => updateOtherNightReminder(e.target.value)}
+              maxLength={500}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="flavour">Flavour text: </label>
+            <input
+              id="flavour"
+              onChange={(e) => updateFlavourText(e.target.value)}
+              maxLength={500}
+            />
+          </div>
+        </Column>
+        <div>{characterJsonString}</div>
+      </PageLayout>
     </>
   );
 };
+
+const PageLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
