@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { TextField } from "./TextField";
+import { ArrayField } from "./ArrayField";
 
 const characterType = {
   townsfolk: "Townsfolk",
@@ -21,6 +22,13 @@ type Jinx = {
   id: string;
   reason: string;
 };
+
+type BotCCharacterArrayFields = {
+  imageUrls: Array<string>;
+  reminders: Array<string>;
+  remindersGlobal: Array<string>;
+};
+type BotCCharacterArrayFieldNames = keyof BotCCharacterArrayFields;
 
 type BotCCharacter = {
   id: string;
@@ -56,30 +64,6 @@ const emptyBotCCharacter: BotCCharacter = {
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
 
-  const updateCharacterImageUrls = (urls: string) => {
-    const urlList = urls.split("\r\n");
-    setCharacterObject({
-      ...characterObject,
-      imageUrls: urlList,
-    });
-  };
-
-  const updateCharacterReminders = (reminders: string) => {
-    const reminderList = reminders.split("\r\n");
-    setCharacterObject({
-      ...characterObject,
-      reminders: reminderList,
-    });
-  };
-
-  const updateGlobalReminders = (reminders: string) => {
-    const reminderList = reminders.split("\r\n");
-    setCharacterObject({
-      ...characterObject,
-      remindersGlobal: reminderList,
-    });
-  };
-
   const updateField = <T,>(
     updatedField: BotCCharacterFieldName,
     newValue: T,
@@ -87,6 +71,49 @@ export const CharacterJsonCreatorPage = () => {
     setCharacterObject({
       ...characterObject,
       [updatedField]: newValue,
+    });
+  };
+
+  const updateValueInArray = <T,>(
+    updatedField: BotCCharacterArrayFieldNames,
+    updatedValue: T,
+    index: number,
+  ) => {
+    const updatedArray = characterObject[updatedField].map((item, i) => {
+      if (index === i) {
+        return updatedValue;
+      } else {
+        return item;
+      }
+    });
+
+    setCharacterObject({
+      ...characterObject,
+      [updatedField]: updatedArray,
+    });
+  };
+
+  const addItemToArray = <T,>(
+    updatedField: BotCCharacterArrayFieldNames,
+    newValue: T,
+  ) => {
+    setCharacterObject({
+      ...characterObject,
+      [updatedField]: [...characterObject[updatedField], newValue],
+    });
+  };
+
+  const removeItemFromArray = (
+    updatedField: BotCCharacterArrayFieldNames,
+    indexToRemove: number,
+  ) => {
+    const updatedArray = characterObject[updatedField].filter(
+      (_, i) => indexToRemove !== i,
+    );
+
+    setCharacterObject({
+      ...characterObject,
+      [updatedField]: updatedArray,
     });
   };
 
@@ -140,15 +167,17 @@ export const CharacterJsonCreatorPage = () => {
             maxLength={50}
             label="Edition"
           />
-          <div>
-            <label htmlFor="imageUrls">
-              Image URLs (put each on a separate line):
-            </label>
-            <textarea
-              id="imageUrls"
-              onChange={(e) => updateCharacterImageUrls(e.target.value)}
-            ></textarea>
-          </div>
+          <ArrayField
+            fieldName="imageUrls"
+            label="Image URLs"
+            values={characterObject.imageUrls}
+            updateItem={(newValue: string, index: number) =>
+              updateValueInArray("imageUrls", newValue, index)
+            }
+            addItem={() => addItemToArray("imageUrls", "")}
+            removeItem={(index) => removeItemFromArray("imageUrls", index)}
+            maxNumberOfElements={3}
+          />
           <div>
             <label htmlFor="isSetup">Setup?: </label>
             <input
@@ -157,20 +186,32 @@ export const CharacterJsonCreatorPage = () => {
               onChange={(e) => updateField("setup", e.target.checked)}
             />
           </div>
-          <div>
-            <label htmlFor="characterReminders">Reminders: </label>
-            <input
-              id="characterReminders"
-              onChange={(e) => updateCharacterReminders(e.target.value)}
-            ></input>
-          </div>
-          <div>
-            <label htmlFor="globalReminders">Global reminders: </label>
-            <input
-              id="globalReminders"
-              onChange={(e) => updateGlobalReminders(e.target.value)}
-            ></input>
-          </div>
+          <ArrayField
+            fieldName="reminders"
+            label="Character reminders"
+            values={characterObject.reminders}
+            updateItem={(newValue: string, index: number) =>
+              updateValueInArray("reminders", newValue, index)
+            }
+            addItem={() => addItemToArray("reminders", "")}
+            removeItem={(index) => removeItemFromArray("reminders", index)}
+            maxNumberOfElements={20}
+            maxItemLength={30}
+          />
+          <ArrayField
+            fieldName="remindersGlobal"
+            label="Global reminders"
+            values={characterObject.remindersGlobal}
+            updateItem={(newValue: string, index: number) =>
+              updateValueInArray("remindersGlobal", newValue, index)
+            }
+            addItem={() => addItemToArray("remindersGlobal", "")}
+            removeItem={(index) =>
+              removeItemFromArray("remindersGlobal", index)
+            }
+            maxNumberOfElements={20}
+            maxItemLength={25}
+          />
           <TextField
             fieldName="firstNightReminder"
             updateField={(newValue: string) =>

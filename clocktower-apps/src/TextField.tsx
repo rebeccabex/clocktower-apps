@@ -1,12 +1,15 @@
 import type { BotCCharacterFieldName } from "./CharacterJsonCreatorPage";
 
-type TextFieldProps = {
+export type BaseFieldProps = {
   fieldName: BotCCharacterFieldName;
+  label?: string;
+  helpText?: string;
+};
+
+type TextFieldProps = BaseFieldProps & {
   updateField: (newValue: string) => void;
   maxLength: number;
-  label?: string;
   required?: boolean;
-  helpText?: string;
 };
 
 export const TextField = ({
@@ -28,7 +31,7 @@ export const TextField = ({
         id={fieldName}
         onChange={(e) => onUpdate(e.target.value)}
         maxLength={maxLength}
-      ></input>
+      />
     </div>
   );
 };
