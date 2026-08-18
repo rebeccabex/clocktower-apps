@@ -33,7 +33,7 @@ export const ArrayField = ({
       )}
       <FieldsContainer>
         {values.map((value, i) => (
-          <RowContainer>
+          <RowContainer key={i}>
             <input
               type="textbox"
               id={`${fieldName}-${i}`}

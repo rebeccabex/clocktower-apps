@@ -1,4 +1,4 @@
-import type { BotCCharacterFieldName } from "./CharacterJsonCreatorPage";
+import type { BotCCharacterFieldName } from "./types";
 
 export type BaseFieldProps = {
   fieldName: BotCCharacterFieldName;

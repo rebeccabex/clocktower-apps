@@ -1,0 +1,98 @@
+export const characterType = {
+  townsfolk: "Townsfolk",
+  outsider: "Outsider",
+  minion: "Minion",
+  demon: "Demon",
+  traveller: "Traveller",
+  fabled: "Fabled",
+  loric: "Loric",
+};
+
+export type CharacterType = keyof typeof characterType;
+export const characterTypes = Object.keys(
+  characterType,
+) as Array<CharacterType>;
+
+export type SpecialAbilities = {};
+
+export type Jinx = {
+  id: string;
+  reason: string;
+};
+
+export type BotCCharacterArrayFields = {
+  imageUrls: Array<string>;
+  reminders: Array<string>;
+  remindersGlobal: Array<string>;
+};
+export type BotCCharacterArrayFieldNames = keyof BotCCharacterArrayFields;
+
+export type BotCCharacter = {
+  id: string;
+  edition?: string;
+  name: string;
+  team: CharacterType;
+  imageUrls?: Array<string>;
+  ability: string;
+  setup: boolean;
+  reminders?: Array<string>;
+  remindersGlobal?: Array<string>;
+  firstNightReminder?: string;
+  otherNightReminder?: string;
+  specialAbilities?: SpecialAbilities;
+  jinxes?: Array<Jinx>;
+  flavor?: string;
+};
+export type BotCCharacterFieldName = keyof BotCCharacter;
+
+export const emptyBotCCharacter: BotCCharacter = {
+  id: "",
+  edition: "",
+  name: "",
+  team: "townsfolk",
+  imageUrls: [],
+  ability: "",
+  setup: false,
+  reminders: [],
+  remindersGlobal: [],
+  specialAbilities: {},
+};
+
+const removeEmptyArrayValues = (character: BotCCharacter): BotCCharacter => ({
+  ...character,
+  imageUrls: character.imageUrls?.filter((url) => url.length > 0),
+  reminders: character.reminders?.filter((reminder) => reminder.length > 0),
+  remindersGlobal: character.remindersGlobal?.filter(
+    (reminder) => reminder.length > 0,
+  ),
+});
+
+const removeEmptyOptionalFields = (
+  character: BotCCharacter,
+): BotCCharacter => ({
+  ...character,
+  edition: character.edition || undefined,
+  imageUrls:
+    character.imageUrls && character.imageUrls.length > 0
+      ? character.imageUrls
+      : undefined,
+  reminders:
+    character.reminders && character.reminders.length > 0
+      ? character.reminders
+      : undefined,
+  remindersGlobal:
+    character.remindersGlobal && character.remindersGlobal.length > 0
+      ? character.remindersGlobal
+      : undefined,
+  firstNightReminder: character.firstNightReminder || undefined,
+  otherNightReminder: character.otherNightReminder || undefined,
+  specialAbilities: character.specialAbilities || undefined,
+});
+
+export const convertCharacterToJson = (character: BotCCharacter) => {
+  const modifiedCharacter = removeEmptyOptionalFields(
+    removeEmptyArrayValues(character),
+  );
+
+  return JSON.stringify(modifiedCharacter, null, 2);
+};

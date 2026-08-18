@@ -2,64 +2,14 @@ import { useState } from "react";
 import styled from "styled-components";
 import { TextField } from "./TextField";
 import { ArrayField } from "./ArrayField";
-
-const characterType = {
-  townsfolk: "Townsfolk",
-  outsider: "Outsider",
-  minion: "Minion",
-  demon: "Demon",
-  traveller: "Traveller",
-  fabled: "Fabled",
-  loric: "Loric",
-};
-
-type CharacterType = keyof typeof characterType;
-const characterTypes = Object.keys(characterType) as Array<CharacterType>;
-
-type SpecialAbilities = {};
-
-type Jinx = {
-  id: string;
-  reason: string;
-};
-
-type BotCCharacterArrayFields = {
-  imageUrls: Array<string>;
-  reminders: Array<string>;
-  remindersGlobal: Array<string>;
-};
-type BotCCharacterArrayFieldNames = keyof BotCCharacterArrayFields;
-
-type BotCCharacter = {
-  id: string;
-  edition: string;
-  characterName: string;
-  team: CharacterType;
-  imageUrls: Array<string>;
-  ability: string;
-  setup: boolean;
-  reminders: Array<string>;
-  remindersGlobal: Array<string>;
-  firstNightReminder?: string;
-  otherNightReminder?: string;
-  specialAbilities: SpecialAbilities;
-  jinxes?: Array<Jinx>;
-  flavor?: string;
-};
-export type BotCCharacterFieldName = keyof BotCCharacter;
-
-const emptyBotCCharacter: BotCCharacter = {
-  id: "",
-  edition: "",
-  characterName: "",
-  team: "townsfolk",
-  imageUrls: [],
-  ability: "",
-  setup: false,
-  reminders: [],
-  remindersGlobal: [],
-  specialAbilities: {},
-};
+import {
+  emptyBotCCharacter,
+  type BotCCharacterFieldName,
+  type BotCCharacterArrayFieldNames,
+  type CharacterType,
+  characterTypes,
+  convertCharacterToJson,
+} from "./types";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
@@ -79,6 +29,10 @@ export const CharacterJsonCreatorPage = () => {
     updatedValue: T,
     index: number,
   ) => {
+    if (!characterObject[updatedField]) {
+      return;
+    }
+
     const updatedArray = characterObject[updatedField].map((item, i) => {
       if (index === i) {
         return updatedValue;
@@ -99,7 +53,9 @@ export const CharacterJsonCreatorPage = () => {
   ) => {
     setCharacterObject({
       ...characterObject,
-      [updatedField]: [...characterObject[updatedField], newValue],
+      [updatedField]: characterObject[updatedField]
+        ? [...characterObject[updatedField], newValue]
+        : [newValue],
     });
   };
 
@@ -107,6 +63,10 @@ export const CharacterJsonCreatorPage = () => {
     updatedField: BotCCharacterArrayFieldNames,
     indexToRemove: number,
   ) => {
+    if (!characterObject[updatedField]) {
+      return;
+    }
+
     const updatedArray = characterObject[updatedField].filter(
       (_, i) => indexToRemove !== i,
     );
@@ -117,7 +77,11 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
-  const characterJsonString = JSON.stringify(characterObject);
+  const characterJsonString = convertCharacterToJson(characterObject);
+
+  const copyJsonToClipboard = () => {
+    navigator.clipboard.writeText(characterJsonString);
+  };
 
   return (
     <>
@@ -131,10 +95,8 @@ export const CharacterJsonCreatorPage = () => {
             label="Id"
           />
           <TextField
-            fieldName="characterName"
-            updateField={(newValue: string) =>
-              updateField("characterName", newValue)
-            }
+            fieldName="name"
+            updateField={(newValue: string) => updateField("name", newValue)}
             maxLength={30}
             label="Character name"
           />
@@ -170,7 +132,7 @@ export const CharacterJsonCreatorPage = () => {
           <ArrayField
             fieldName="imageUrls"
             label="Image URLs"
-            values={characterObject.imageUrls}
+            values={characterObject.imageUrls ?? []}
             updateItem={(newValue: string, index: number) =>
               updateValueInArray("imageUrls", newValue, index)
             }
@@ -189,7 +151,7 @@ export const CharacterJsonCreatorPage = () => {
           <ArrayField
             fieldName="reminders"
             label="Character reminders"
-            values={characterObject.reminders}
+            values={characterObject.reminders ?? []}
             updateItem={(newValue: string, index: number) =>
               updateValueInArray("reminders", newValue, index)
             }
@@ -201,7 +163,7 @@ export const CharacterJsonCreatorPage = () => {
           <ArrayField
             fieldName="remindersGlobal"
             label="Global reminders"
-            values={characterObject.remindersGlobal}
+            values={characterObject.remindersGlobal ?? []}
             updateItem={(newValue: string, index: number) =>
               updateValueInArray("remindersGlobal", newValue, index)
             }
@@ -237,7 +199,10 @@ export const CharacterJsonCreatorPage = () => {
             label="Flavour text"
           />
         </InputColumn>
-        <OutputColumn>{characterJsonString}</OutputColumn>
+        <OutputColumn>
+          <button onClick={copyJsonToClipboard}>Copy</button>
+          {characterJsonString}
+        </OutputColumn>
       </PageLayout>
     </>
   );
