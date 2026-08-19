@@ -24,13 +24,14 @@ export const ArrayField = ({
     updateItem(newValue, index);
   const onAddItem = () => addItem();
   const onRemoveItem = (index: number) => removeItem(index);
+  const isDisabled = values.length >= maxNumberOfElements;
 
   return (
     <div>
       <div>{label}</div>
-      {maxNumberOfElements > values.length && (
-        <button onClick={onAddItem}>Add</button>
-      )}
+      <button onClick={onAddItem} disabled={isDisabled}>
+        Add
+      </button>
       <FieldsContainer>
         {values.map((value, i) => (
           <RowContainer key={i}>

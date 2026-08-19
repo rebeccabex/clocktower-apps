@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { TextField } from "./TextField";
-import { ArrayField } from "./ArrayField";
+import { TextField } from "./components/TextField";
+import { ArrayField } from "./components/ArrayField";
 import {
   emptyBotCCharacter,
   type BotCCharacterFieldName,

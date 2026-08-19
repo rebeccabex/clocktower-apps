@@ -1,5 +1,5 @@
-import { Dropdown } from "./Dropdown";
-import { TextField } from "./TextField";
+import { Dropdown } from "./components/Dropdown";
+import { TextField } from "./components/TextField";
 import {
   specialAbilities,
   specialAbilityGlobalSettings,

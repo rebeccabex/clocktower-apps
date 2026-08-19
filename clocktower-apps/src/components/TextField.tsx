@@ -1,4 +1,4 @@
-import type { BotCCharacterFieldName, SpecialAbilityFieldName } from "./types";
+import type { BotCCharacterFieldName, SpecialAbilityFieldName } from "../types";
 
 export type BaseFieldProps = {
   fieldName: BotCCharacterFieldName | SpecialAbilityFieldName;
