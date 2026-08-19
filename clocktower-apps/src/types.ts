@@ -13,7 +13,82 @@ export const characterTypes = Object.keys(
   characterType,
 ) as Array<CharacterType>;
 
-export type SpecialAbilities = {};
+export const specialAbilityType = {
+  selection: "Selection",
+  ability: "Ability",
+  signal: "Signal",
+  vote: "Vote",
+  reveal: "Reveal",
+  player: "Player",
+  reminder: "Reminder",
+};
+export type SpecialAbilityType = keyof typeof specialAbilityType;
+export const specialAbilityTypes = Object.keys(
+  specialAbilityType,
+) as Array<SpecialAbilityType>;
+
+export const specialAbilityName = {
+  grimoire: "grimoire",
+  pointing: "pointing",
+  ghostVotes: "ghost-votes",
+  distributeRoles: "distribute-roles",
+  bagDisabled: "bag-disabled",
+  bagDuplicate: "bag-duplicate",
+  evilDuplicate: "evil-duplicate",
+  goodDuplicate: "good-duplicate",
+  multiplier: "multiplier",
+  hidden: "hidden",
+  replaceCharacter: "replace-character",
+  player: "player",
+  card: "card",
+  openEyes: "open-eyes",
+  public: "public",
+};
+export type SpecialAbilityName = keyof typeof specialAbilityName;
+export const specialAbilities = Object.keys(
+  specialAbilityName,
+) as Array<SpecialAbilityName>;
+
+export const specialAbilityTime = {
+  pregame: "pregame",
+  day: "day",
+  night: "night",
+  firstNight: "firstNight",
+  firstDay: "firstDay",
+  otherNight: "otherNight",
+  otherDay: "otherDay",
+};
+export type SpecialAbilityTime = keyof typeof specialAbilityTime;
+export const specialAbilityTimes = Object.keys(
+  specialAbilityTime,
+) as Array<SpecialAbilityTime>;
+
+export const specialAbilityGlobal = {
+  townsfolk: "townsfolk",
+  outsider: "outsider",
+  minion: "minion",
+  demon: "demon",
+  traveller: "traveller",
+  dead: "dead",
+};
+export type SpecialAbilityGlobal = keyof typeof specialAbilityGlobal;
+export const specialAbilityGlobalSettings = Object.keys(
+  specialAbilityGlobal,
+) as Array<SpecialAbilityGlobal>;
+
+export type SpecialAbility = {
+  name: SpecialAbilityName;
+  type: SpecialAbilityType;
+  value?: string | number;
+  time?: SpecialAbilityTime;
+  global?: SpecialAbilityGlobal;
+};
+export type SpecialAbilityFieldName = keyof SpecialAbility;
+
+export const defaultSpecialAbility = {
+  name: "grimoire" as const,
+  type: "ability" as const,
+};
 
 export type Jinx = {
   id: string;
@@ -24,8 +99,9 @@ export type BotCCharacterArrayFields = {
   imageUrls: Array<string>;
   reminders: Array<string>;
   remindersGlobal: Array<string>;
+  specialAbilities: Array<SpecialAbility>;
 };
-export type BotCCharacterArrayFieldNames = keyof BotCCharacterArrayFields;
+export type BotCCharacterArrayFieldName = keyof BotCCharacterArrayFields;
 
 export type BotCCharacter = {
   id: string;
@@ -39,7 +115,7 @@ export type BotCCharacter = {
   remindersGlobal?: Array<string>;
   firstNightReminder?: string;
   otherNightReminder?: string;
-  specialAbilities?: SpecialAbilities;
+  specialAbilities?: Array<SpecialAbility>;
   jinxes?: Array<Jinx>;
   flavor?: string;
 };
@@ -55,7 +131,7 @@ export const emptyBotCCharacter: BotCCharacter = {
   setup: false,
   reminders: [],
   remindersGlobal: [],
-  specialAbilities: {},
+  specialAbilities: [],
 };
 
 const removeEmptyArrayValues = (character: BotCCharacter): BotCCharacter => ({
@@ -86,7 +162,10 @@ const removeEmptyOptionalFields = (
       : undefined,
   firstNightReminder: character.firstNightReminder || undefined,
   otherNightReminder: character.otherNightReminder || undefined,
-  specialAbilities: character.specialAbilities || undefined,
+  specialAbilities:
+    character.specialAbilities && character.specialAbilities.length > 0
+      ? character.specialAbilities
+      : undefined,
 });
 
 export const convertCharacterToJson = (character: BotCCharacter) => {

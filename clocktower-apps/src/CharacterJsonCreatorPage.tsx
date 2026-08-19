@@ -5,11 +5,13 @@ import { ArrayField } from "./ArrayField";
 import {
   emptyBotCCharacter,
   type BotCCharacterFieldName,
-  type BotCCharacterArrayFieldNames,
+  type BotCCharacterArrayFieldName,
   type CharacterType,
   characterTypes,
   convertCharacterToJson,
+  type SpecialAbility,
 } from "./types";
+import { SpecialAbilities } from "./SpecialAbilities";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
@@ -25,7 +27,7 @@ export const CharacterJsonCreatorPage = () => {
   };
 
   const updateValueInArray = <T,>(
-    updatedField: BotCCharacterArrayFieldNames,
+    updatedField: BotCCharacterArrayFieldName,
     updatedValue: T,
     index: number,
   ) => {
@@ -48,7 +50,7 @@ export const CharacterJsonCreatorPage = () => {
   };
 
   const addItemToArray = <T,>(
-    updatedField: BotCCharacterArrayFieldNames,
+    updatedField: BotCCharacterArrayFieldName,
     newValue: T,
   ) => {
     setCharacterObject({
@@ -60,7 +62,7 @@ export const CharacterJsonCreatorPage = () => {
   };
 
   const removeItemFromArray = (
-    updatedField: BotCCharacterArrayFieldNames,
+    updatedField: BotCCharacterArrayFieldName,
     indexToRemove: number,
   ) => {
     if (!characterObject[updatedField]) {
@@ -93,6 +95,7 @@ export const CharacterJsonCreatorPage = () => {
             updateField={(newValue: string) => updateField("id", newValue)}
             maxLength={50}
             label="Id"
+            pattern="[a-z0-9]"
           />
           <TextField
             fieldName="name"
@@ -197,6 +200,25 @@ export const CharacterJsonCreatorPage = () => {
             updateField={(newValue: string) => updateField("flavor", newValue)}
             maxLength={50}
             label="Flavour text"
+          />
+          <SpecialAbilities
+            specialAbilities={characterObject.specialAbilities ?? []}
+            addSpecialAbility={(newAbility: SpecialAbility) =>
+              addItemToArray("specialAbilities", newAbility)
+            }
+            updateSpecialAbility={(
+              updatedAbility: SpecialAbility,
+              indexToUpdate: number,
+            ) =>
+              updateValueInArray(
+                "specialAbilities",
+                updatedAbility,
+                indexToUpdate,
+              )
+            }
+            removeSpecialAbility={(indexToRemove: number) =>
+              removeItemFromArray("specialAbilities", indexToRemove)
+            }
           />
         </InputColumn>
         <OutputColumn>
