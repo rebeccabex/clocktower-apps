@@ -1,8 +1,12 @@
 import styled from "styled-components";
-import type { BotCCharacterFieldName, SpecialAbilityFieldName } from "../types";
+import type {
+  BotCCharacterFieldName,
+  JinxFieldName,
+  SpecialAbilityFieldName,
+} from "../types";
 
 export type BaseFieldProps = {
-  fieldName: BotCCharacterFieldName | SpecialAbilityFieldName;
+  fieldName: BotCCharacterFieldName | SpecialAbilityFieldName | JinxFieldName;
   label?: string;
   helpText?: string;
 };
@@ -42,6 +46,7 @@ export const TextField = ({
 
 const TextFieldContainer = styled.div`
   display: flex;
+  margin: 5px 0;
 `;
 
 const LabelContainer = styled.label`

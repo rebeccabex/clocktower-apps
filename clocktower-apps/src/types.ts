@@ -1,3 +1,5 @@
+import { nullSelectionValue } from "./components/Dropdown";
+
 export const characterType = {
   townsfolk: "Townsfolk",
   outsider: "Outsider",
@@ -94,6 +96,7 @@ export type Jinx = {
   id: string;
   reason: string;
 };
+export type JinxFieldName = keyof Jinx;
 
 export type BotCCharacterArrayFields = {
   imageUrls: Array<string>;
@@ -141,6 +144,11 @@ const removeEmptyArrayValues = (character: BotCCharacter): BotCCharacter => ({
   remindersGlobal: character.remindersGlobal?.filter(
     (reminder) => reminder.length > 0,
   ),
+  specialAbilities: character.specialAbilities?.map((ability) => ({
+    ...ability,
+    time: ability.time === nullSelectionValue ? undefined : ability.time,
+    global: ability.global === nullSelectionValue ? undefined : ability.global,
+  })),
 });
 
 const removeEmptyOptionalFields = (

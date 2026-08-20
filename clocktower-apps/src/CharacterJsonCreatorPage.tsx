@@ -10,6 +10,7 @@ import {
   characterTypes,
   convertCharacterToJson,
   type SpecialAbility,
+  type SpecialAbilityFieldName,
 } from "./types";
 import { SpecialAbilities } from "./SpecialAbilities";
 
@@ -79,6 +80,30 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
+  const updateSpecialAbilities = (
+    fieldToUpdate: SpecialAbilityFieldName,
+    newValue: string,
+    indexToUpdate: number,
+  ) => {
+    const updatedSpecialAbilities = characterObject.specialAbilities?.map(
+      (specialAbility, i) => {
+        if (i === indexToUpdate) {
+          return {
+            ...specialAbility,
+            [fieldToUpdate]: newValue,
+          };
+        }
+        return specialAbility;
+      },
+    );
+
+    setCharacterObject({
+      ...characterObject,
+      specialAbilities: updatedSpecialAbilities,
+    });
+  };
+
+  // TODO: Wrap in useEffect and save to local storage
   const characterJsonString = convertCharacterToJson(characterObject);
 
   const copyJsonToClipboard = () => {
@@ -207,11 +232,12 @@ export const CharacterJsonCreatorPage = () => {
               addItemToArray("specialAbilities", newAbility)
             }
             updateSpecialAbility={(
-              updatedAbility: SpecialAbility,
+              fieldToUpdate: SpecialAbilityFieldName,
+              updatedAbility: string,
               indexToUpdate: number,
             ) =>
-              updateValueInArray(
-                "specialAbilities",
+              updateSpecialAbilities(
+                fieldToUpdate,
                 updatedAbility,
                 indexToUpdate,
               )

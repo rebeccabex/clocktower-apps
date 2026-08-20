@@ -1,12 +1,17 @@
 import styled from "styled-components";
 import { SpecialAbilitiesField } from "./SpecialAbilitiesField";
-import { defaultSpecialAbility, type SpecialAbility } from "./types";
+import {
+  defaultSpecialAbility,
+  type SpecialAbility,
+  type SpecialAbilityFieldName,
+} from "./types";
 
 type SpecialAbilitiesProps = {
   specialAbilities: Array<SpecialAbility>;
   addSpecialAbility: (newAbility: SpecialAbility) => void;
   updateSpecialAbility: (
-    updatedAbility: SpecialAbility,
+    fieldToUpdate: SpecialAbilityFieldName,
+    updatedAbility: string,
     indexToUpdate: number,
   ) => void;
   removeSpecialAbility: (indexToRemove: number) => void;
@@ -19,8 +24,11 @@ export const SpecialAbilities = ({
   removeSpecialAbility,
 }: SpecialAbilitiesProps) => {
   const onAddSpecialAbility = () => addSpecialAbility(defaultSpecialAbility);
-  const onUpdate = (updatedAbility: SpecialAbility, indexToUpdate: number) =>
-    updateSpecialAbility(updatedAbility, indexToUpdate);
+  const onUpdate = (
+    fieldToUpdate: SpecialAbilityFieldName,
+    updatedAbility: string,
+    indexToUpdate: number,
+  ) => updateSpecialAbility(fieldToUpdate, updatedAbility, indexToUpdate);
   const onDelete = (indexToRemove: number) =>
     removeSpecialAbility(indexToRemove);
 
@@ -36,7 +44,10 @@ export const SpecialAbilities = ({
           </div>
           <SpecialAbilitiesField
             specialAbility={specialAbility}
-            updateAbility={() => onUpdate(specialAbility, i)}
+            updateAbility={(
+              fieldToUpdate: SpecialAbilityFieldName,
+              newValue: string,
+            ) => onUpdate(fieldToUpdate, newValue, i)}
           />
         </SpecialAbilitiesContainer>
       ))}

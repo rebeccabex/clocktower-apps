@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const nullSelectionValue = "------" as string;
+export const nullSelectionValue = "------" as string;
 
 type DropdownProps = {
   values: Array<string>;
@@ -43,7 +43,7 @@ export const Dropdown = ({
 const DropdownContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 10px 0;
+  margin: 5px 0;
 `;
 
 const LabelContainer = styled.label`
