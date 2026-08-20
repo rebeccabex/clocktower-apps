@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { Dropdown } from "./components/Dropdown";
 import { TextField } from "./components/TextField";
 import {
@@ -27,7 +28,7 @@ export const SpecialAbilitiesField = ({
   ) => updateAbility(fieldToUpdate, newValue);
 
   return (
-    <div>
+    <SpecialAbilityContainer>
       <Dropdown
         values={specialAbilities}
         onChange={(newValue: string) => handleOnChange("name", newValue)}
@@ -60,6 +61,11 @@ export const SpecialAbilitiesField = ({
         label="Value"
         maxLength={50}
       />
-    </div>
+    </SpecialAbilityContainer>
   );
 };
+
+const SpecialAbilityContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

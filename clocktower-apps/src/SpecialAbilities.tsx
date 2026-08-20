@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { SpecialAbilitiesField } from "./SpecialAbilitiesField";
 import { defaultSpecialAbility, type SpecialAbility } from "./types";
 
@@ -28,7 +29,7 @@ export const SpecialAbilities = ({
       <div>Special Abilities</div>
       <button onClick={onAddSpecialAbility}>Add</button>
       {specialAbilities.map((specialAbility, i) => (
-        <div key={i}>
+        <SpecialAbilitiesContainer key={i}>
           <div>
             {`Special ability ${i + 1}`}
             <button onClick={() => onDelete(i)}>-</button>
@@ -37,8 +38,13 @@ export const SpecialAbilities = ({
             specialAbility={specialAbility}
             updateAbility={() => onUpdate(specialAbility, i)}
           />
-        </div>
+        </SpecialAbilitiesContainer>
       ))}
     </div>
   );
 };
+
+const SpecialAbilitiesContainer = styled.div`
+  display: block;
+  width: 50%;
+`;

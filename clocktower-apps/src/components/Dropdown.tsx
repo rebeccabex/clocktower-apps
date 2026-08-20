@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 const nullSelectionValue = "------" as string;
 
 type DropdownProps = {
@@ -21,9 +23,9 @@ export const Dropdown = ({
   }
 
   return (
-    <>
-      <label htmlFor={dropdownId}>{label}: </label>
-      <select
+    <DropdownContainer>
+      <LabelContainer htmlFor={dropdownId}>{label}: </LabelContainer>
+      <SelectContainer
         id={dropdownId}
         defaultValue={initialValue || "Select..."}
         onChange={(e) => onChange(e.target.value)}
@@ -33,7 +35,22 @@ export const Dropdown = ({
             {value}
           </option>
         ))}
-      </select>
-    </>
+      </SelectContainer>
+    </DropdownContainer>
   );
 };
+
+const DropdownContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+`;
+
+const LabelContainer = styled.label`
+  width: 40%;
+`;
+
+const SelectContainer = styled.select`
+  width: 60%;
+  margin: 0 10px;
+`;

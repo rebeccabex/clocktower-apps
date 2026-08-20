@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import type { BotCCharacterFieldName, SpecialAbilityFieldName } from "../types";
 
 export type BaseFieldProps = {
@@ -24,17 +25,30 @@ export const TextField = ({
   const onUpdate = (newValue: string) => updateField(newValue);
 
   return (
-    <div>
-      <label htmlFor="characterName">
+    <TextFieldContainer>
+      <LabelContainer htmlFor="characterName">
         {label ?? fieldName}: {required && "*"}
-      </label>
-      <input
+      </LabelContainer>
+      <InputContainer
         type="textbox"
         id={fieldName}
         onChange={(e) => onUpdate(e.target.value)}
         maxLength={maxLength}
         pattern={pattern}
       />
-    </div>
+    </TextFieldContainer>
   );
 };
+
+const TextFieldContainer = styled.div`
+  display: flex;
+`;
+
+const LabelContainer = styled.label`
+  width: 40%;
+`;
+
+const InputContainer = styled.input`
+  width: 60%;
+  margin: 0 10px;
+`;
