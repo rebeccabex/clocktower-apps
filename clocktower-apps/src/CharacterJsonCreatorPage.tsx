@@ -11,8 +11,11 @@ import {
   convertCharacterToJson,
   type SpecialAbility,
   type SpecialAbilityFieldName,
+  type Jinx,
+  type JinxFieldName,
 } from "./types";
 import { SpecialAbilities } from "./SpecialAbilities";
+import { JinxSection } from "./JinxSection";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
@@ -103,6 +106,27 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
+  const updateJinxes = (
+    fieldToUpdate: JinxFieldName,
+    newValue: string,
+    indexToUpdate: number,
+  ) => {
+    const updatedJinxes = characterObject.jinxes?.map((jinx, i) => {
+      if (i === indexToUpdate) {
+        return {
+          ...jinx,
+          [fieldToUpdate]: newValue,
+        };
+      }
+      return jinx;
+    });
+
+    setCharacterObject({
+      ...characterObject,
+      jinxes: updatedJinxes,
+    });
+  };
+
   // TODO: Wrap in useEffect and save to local storage
   const characterJsonString = convertCharacterToJson(characterObject);
 
@@ -121,12 +145,14 @@ export const CharacterJsonCreatorPage = () => {
             maxLength={50}
             label="Id"
             pattern="[a-z0-9]"
+            required
           />
           <TextField
             fieldName="name"
             updateField={(newValue: string) => updateField("name", newValue)}
             maxLength={30}
             label="Character name"
+            required
           />
           <div>
             <label htmlFor="characterType">Character type: </label>
@@ -150,6 +176,7 @@ export const CharacterJsonCreatorPage = () => {
             updateField={(newValue: string) => updateField("ability", newValue)}
             maxLength={250}
             label="Ability"
+            required
           />
           <TextField
             fieldName="edition"
@@ -231,19 +258,17 @@ export const CharacterJsonCreatorPage = () => {
             addSpecialAbility={(newAbility: SpecialAbility) =>
               addItemToArray("specialAbilities", newAbility)
             }
-            updateSpecialAbility={(
-              fieldToUpdate: SpecialAbilityFieldName,
-              updatedAbility: string,
-              indexToUpdate: number,
-            ) =>
-              updateSpecialAbilities(
-                fieldToUpdate,
-                updatedAbility,
-                indexToUpdate,
-              )
-            }
+            updateSpecialAbility={updateSpecialAbilities}
             removeSpecialAbility={(indexToRemove: number) =>
               removeItemFromArray("specialAbilities", indexToRemove)
+            }
+          />
+          <JinxSection
+            jinxes={characterObject.jinxes ?? []}
+            addJinx={(newJinx: Jinx) => addItemToArray("jinxes", newJinx)}
+            updateJinx={updateJinxes}
+            removeJinx={(indexToRemove: number) =>
+              removeItemFromArray("jinxes", indexToRemove)
             }
           />
         </InputColumn>

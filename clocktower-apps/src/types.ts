@@ -98,11 +98,17 @@ export type Jinx = {
 };
 export type JinxFieldName = keyof Jinx;
 
+export const defaultJinx = {
+  id: "",
+  reason: "",
+};
+
 export type BotCCharacterArrayFields = {
-  imageUrls: Array<string>;
-  reminders: Array<string>;
-  remindersGlobal: Array<string>;
-  specialAbilities: Array<SpecialAbility>;
+  imageUrls?: Array<string>;
+  reminders?: Array<string>;
+  remindersGlobal?: Array<string>;
+  specialAbilities?: Array<SpecialAbility>;
+  jinxes?: Array<Jinx>;
 };
 export type BotCCharacterArrayFieldName = keyof BotCCharacterArrayFields;
 
@@ -111,17 +117,12 @@ export type BotCCharacter = {
   edition?: string;
   name: string;
   team: CharacterType;
-  imageUrls?: Array<string>;
   ability: string;
   setup: boolean;
-  reminders?: Array<string>;
-  remindersGlobal?: Array<string>;
   firstNightReminder?: string;
   otherNightReminder?: string;
-  specialAbilities?: Array<SpecialAbility>;
-  jinxes?: Array<Jinx>;
   flavor?: string;
-};
+} & BotCCharacterArrayFields;
 export type BotCCharacterFieldName = keyof BotCCharacter;
 
 export const emptyBotCCharacter: BotCCharacter = {
