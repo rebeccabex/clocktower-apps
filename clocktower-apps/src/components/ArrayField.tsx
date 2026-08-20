@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import type { BaseFieldProps } from "./TextField";
 import styled from "styled-components";
 
@@ -27,11 +28,11 @@ export const ArrayField = ({
   const isDisabled = values.length >= maxNumberOfElements;
 
   return (
-    <div>
-      <div>{label}</div>
-      <button onClick={onAddItem} disabled={isDisabled}>
-        Add
-      </button>
+    <ArrayFieldContainer>
+      <HeaderContainer>
+        <div>{label}</div>
+        <Button onClick={onAddItem} label="Add" disabled={isDisabled} />
+      </HeaderContainer>
       <FieldsContainer>
         {values.map((value, i) => (
           <RowContainer key={i}>
@@ -42,13 +43,23 @@ export const ArrayField = ({
               maxLength={maxItemLength}
               value={value}
             />
-            <button onClick={() => onRemoveItem(i)}>-</button>
+            <Button onClick={() => onRemoveItem(i)} label="Delete" />
           </RowContainer>
         ))}
       </FieldsContainer>
-    </div>
+    </ArrayFieldContainer>
   );
 };
+
+const ArrayFieldContainer = styled.div`
+  margin: 5px 0;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
 
 const FieldsContainer = styled.div`
   display: flex;

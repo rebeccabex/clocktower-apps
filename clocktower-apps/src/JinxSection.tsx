@@ -1,3 +1,5 @@
+import styled from "styled-components";
+import { Button } from "./components/Button";
 import { TextField } from "./components/TextField";
 import { defaultJinx, type Jinx, type JinxFieldName } from "./types";
 
@@ -24,14 +26,16 @@ export const JinxSection = ({
   const onDelete = (indexToRemove: number) => removeJinx(indexToRemove);
 
   return (
-    <div>
-      <div>Jinxes</div>
-      <button onClick={onAdd}>Add</button>
+    <JinxesContainer>
+      <HeaderContainer>
+        <div>Jinxes</div>
+        <Button onClick={onAdd} label="Add" />
+      </HeaderContainer>
       {jinxes.map((_, i) => (
         <div>
           <div>
             {`Jinx ${i + 1}`}
-            <button onClick={() => onDelete(i)}>-</button>
+            <Button onClick={() => onDelete(i)} label="Delete" />
           </div>
           <TextField
             fieldName="id"
@@ -49,6 +53,16 @@ export const JinxSection = ({
           />
         </div>
       ))}
-    </div>
+    </JinxesContainer>
   );
 };
+
+const JinxesContainer = styled.div`
+  margin: 5px 0;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;

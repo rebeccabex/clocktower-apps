@@ -16,6 +16,8 @@ import {
 } from "./types";
 import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
+import { Button } from "./components/Button";
+import { Dropdown } from "./components/Dropdown";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
@@ -154,23 +156,15 @@ export const CharacterJsonCreatorPage = () => {
             label="Character name"
             required
           />
-          <div>
-            <label htmlFor="characterType">Character type: </label>
-            <select
-              id="characterType"
-              onChange={(e) =>
-                updateField("team", e.target.value as CharacterType)
-              }
-            >
-              (
-              {characterTypes.map((characterType) => (
-                <option key={characterType} value={characterType}>
-                  {characterType}
-                </option>
-              ))}
-              )
-            </select>
-          </div>
+          <Dropdown
+            values={characterTypes}
+            initialValue={characterObject.team}
+            label="Character type"
+            onChange={(newValue: string) =>
+              updateField("team", newValue as CharacterType)
+            }
+            required
+          />
           <TextField
             fieldName="ability"
             updateField={(newValue: string) => updateField("ability", newValue)}
@@ -273,7 +267,7 @@ export const CharacterJsonCreatorPage = () => {
           />
         </InputColumn>
         <OutputColumn>
-          <button onClick={copyJsonToClipboard}>Copy</button>
+          <Button onClick={copyJsonToClipboard} label="Copy" />
           {characterJsonString}
         </OutputColumn>
       </PageLayout>
@@ -291,6 +285,7 @@ const InputColumn = styled.div`
   flex-direction: column;
   border: 1px solid #000000;
   width: 50%;
+  padding: 10px 0;
 `;
 
 const OutputColumn = styled.div`
@@ -298,4 +293,5 @@ const OutputColumn = styled.div`
   flex-direction: column;
   border: 1px solid #000000;
   width: 50%;
+  padding: 10px 0;
 `;
