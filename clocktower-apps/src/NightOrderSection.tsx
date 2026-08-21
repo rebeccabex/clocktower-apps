@@ -1,4 +1,6 @@
+import styled from "styled-components";
 import {
+  createDisplayValueForNightOrderSlot,
   findNightOrderSlotByPosition,
   type NightOrder,
   type NightOrderSlot,
@@ -7,7 +9,7 @@ import {
 type NightOrderSectionProps = {
   nightOrder: NightOrder;
   label: string;
-  dropdownValues: Array<NightOrderSlot>;
+  nightOrderSlots: Array<NightOrderSlot>;
   updateNightOrderValue: (newValue: number) => void;
   currentValue: number;
 };
@@ -15,37 +17,66 @@ type NightOrderSectionProps = {
 export const NightOrderSection = ({
   nightOrder,
   label,
-  dropdownValues,
+  nightOrderSlots,
   updateNightOrderValue,
   currentValue,
 }: NightOrderSectionProps) => {
-  const nightOrderSlot = findNightOrderSlotByPosition(nightOrder, currentValue);
+  const currentNightOrderSlot = createDisplayValueForNightOrderSlot(
+    findNightOrderSlotByPosition(nightOrder, currentValue),
+  );
 
-  const onChange = (newValue: string) =>
+  const onChangeDropdownValue = (newValue: string) =>
+    updateNightOrderValue(Number.parseInt(newValue));
+
+  const onChangeNumericValue = (newValue: string) =>
     updateNightOrderValue(Number.parseInt(newValue));
 
   return (
-    <>
-      <label>{label}: </label>
-      <select id={label} onChange={(e) => onChange(e.target.value)}>
-        {dropdownValues.map((value) => (
-          <option
-            key={`${label}-${value}`}
-            value={value.startingPosition}
-            selected={
-              value.startingPosition === nightOrderSlot?.startingPosition
-            }
-          >
-            <div>{value.startingPosition}</div>
-            <div>{value.description}</div>
-          </option>
-        ))}
-      </select>
-      <input
-        type="number"
-        onBlur={(e) => onChange(e.target.value)}
-        value={currentValue}
-      />
-    </>
+    <NightOrderSectionContainer>
+      <LabelContainer>{label}: </LabelContainer>
+      <ValueContainer>
+        <SelectContainer
+          id={label}
+          onChange={(e) => onChangeDropdownValue(e.target.value)}
+          value={currentNightOrderSlot}
+        >
+          {nightOrderSlots.map((value) => (
+            <option
+              key={`${label}-${createDisplayValueForNightOrderSlot(value)}`}
+              value={createDisplayValueForNightOrderSlot(value)}
+              disabled={value.unselectable}
+            >
+              {createDisplayValueForNightOrderSlot(value)}
+            </option>
+          ))}
+        </SelectContainer>
+        <InputContainer
+          type="number"
+          onChange={(e) => onChangeNumericValue(e.target.value)}
+          value={currentValue}
+        />
+      </ValueContainer>
+    </NightOrderSectionContainer>
   );
 };
+
+const NightOrderSectionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const LabelContainer = styled.label`
+  width: 40%;
+`;
+
+const ValueContainer = styled.div`
+  width: 60%;
+`;
+
+const SelectContainer = styled.select`
+  width: 70%;
+`;
+
+const InputContainer = styled.input`
+  width: 20%;
+`;

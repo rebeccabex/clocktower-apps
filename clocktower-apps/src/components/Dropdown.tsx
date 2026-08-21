@@ -31,15 +31,11 @@ export const Dropdown = ({
       )}
       <SelectContainer
         id={dropdownId}
-        defaultValue={currentValue || "Select..."}
         onChange={(e) => onChange(e.target.value)}
+        value={currentValue}
       >
         {values.map((value) => (
-          <option
-            key={`${label}-${value}`}
-            value={value}
-            selected={currentValue === value}
-          >
+          <option key={`${label}-${value}`} value={value}>
             {value}
           </option>
         ))}

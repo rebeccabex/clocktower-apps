@@ -226,8 +226,8 @@ export const CharacterJsonCreatorPage = () => {
             maxItemLength={25}
           />
           <NightOrderSection
-            label="First night order position"
-            dropdownValues={firstNightOrderSlots}
+            label="First night order"
+            nightOrderSlots={firstNightOrderSlots}
             nightOrder="First"
             currentValue={characterObject.firstNight ?? 0}
             updateNightOrderValue={(newValue: number) =>
@@ -235,8 +235,8 @@ export const CharacterJsonCreatorPage = () => {
             }
           />
           <NightOrderSection
-            label="Other nights order position"
-            dropdownValues={otherNightOrderSlots}
+            label="Other nights order"
+            nightOrderSlots={otherNightOrderSlots}
             nightOrder="Other"
             currentValue={characterObject.otherNight ?? 0}
             updateNightOrderValue={(newValue: number) =>
