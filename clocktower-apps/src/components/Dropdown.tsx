@@ -6,16 +6,18 @@ type DropdownProps = {
   values: Array<string>;
   onChange: (newValue: string) => void;
   label: string;
-  initialValue?: string;
+  currentValue?: string;
   required?: boolean;
+  shouldDisplayLabel?: boolean;
 };
 
 export const Dropdown = ({
   values,
   onChange,
   label,
-  initialValue,
+  currentValue,
   required,
+  shouldDisplayLabel = true,
 }: DropdownProps) => {
   const dropdownId = `dropdown_${label}`;
   if (!required && !values.includes(nullSelectionValue)) {
@@ -24,14 +26,20 @@ export const Dropdown = ({
 
   return (
     <DropdownContainer>
-      <LabelContainer htmlFor={dropdownId}>{label}: </LabelContainer>
+      {shouldDisplayLabel && (
+        <LabelContainer htmlFor={dropdownId}>{label}: </LabelContainer>
+      )}
       <SelectContainer
         id={dropdownId}
-        defaultValue={initialValue || "Select..."}
+        defaultValue={currentValue || "Select..."}
         onChange={(e) => onChange(e.target.value)}
       >
         {values.map((value) => (
-          <option key={`${label}-${value}`} value={value}>
+          <option
+            key={`${label}-${value}`}
+            value={value}
+            selected={currentValue === value}
+          >
             {value}
           </option>
         ))}

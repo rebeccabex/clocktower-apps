@@ -18,6 +18,8 @@ import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
 import { Button } from "./components/Button";
 import { Dropdown } from "./components/Dropdown";
+import { NightOrderSection } from "./NightOrderSection";
+import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
@@ -158,7 +160,7 @@ export const CharacterJsonCreatorPage = () => {
           />
           <Dropdown
             values={characterTypes}
-            initialValue={characterObject.team}
+            currentValue={characterObject.team}
             label="Character type"
             onChange={(newValue: string) =>
               updateField("team", newValue as CharacterType)
@@ -222,6 +224,24 @@ export const CharacterJsonCreatorPage = () => {
             }
             maxNumberOfElements={20}
             maxItemLength={25}
+          />
+          <NightOrderSection
+            label="First night order position"
+            dropdownValues={firstNightOrderSlots}
+            nightOrder="First"
+            currentValue={characterObject.firstNight ?? 0}
+            updateNightOrderValue={(newValue: number) =>
+              updateField("firstNight", newValue)
+            }
+          />
+          <NightOrderSection
+            label="Other nights order position"
+            dropdownValues={otherNightOrderSlots}
+            nightOrder="Other"
+            currentValue={characterObject.otherNight ?? 0}
+            updateNightOrderValue={(newValue: number) =>
+              updateField("otherNight", newValue)
+            }
           />
           <TextField
             fieldName="firstNightReminder"
