@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { TextField } from "./components/TextField";
 import { ArrayField } from "./components/ArrayField";
@@ -18,9 +18,14 @@ import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
 import { Button } from "./components/Button";
 import { Dropdown } from "./components/Dropdown";
+import usePersistentState from "./hooks/usePersistentState";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
+  const [characterJsonString, setCharacterJsonString] = usePersistentState(
+    "currentJson",
+    "{}",
+  );
 
   const updateField = <T,>(
     updatedField: BotCCharacterFieldName,
@@ -129,8 +134,9 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
-  // TODO: Wrap in useEffect and save to local storage
-  const characterJsonString = convertCharacterToJson(characterObject);
+  useEffect(() => {
+    setCharacterJsonString(convertCharacterToJson(characterObject));
+  }, [characterObject]);
 
   const copyJsonToClipboard = () => {
     navigator.clipboard.writeText(characterJsonString);
