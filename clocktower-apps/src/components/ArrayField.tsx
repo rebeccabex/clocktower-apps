@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import type { BaseFieldProps } from "./TextField";
+import { type BaseFieldProps } from "./TextField";
 import styled from "styled-components";
 
 type ArrayFieldProps = BaseFieldProps & {
@@ -36,7 +36,7 @@ export const ArrayField = ({
       <FieldsContainer>
         {values.map((value, i) => (
           <RowContainer key={i}>
-            <input
+            <TextFieldWrapper
               type="textbox"
               id={`${fieldName}-${i}`}
               onChange={(e) => onUpdate(e.target.value, i)}
@@ -69,4 +69,9 @@ const FieldsContainer = styled.div`
 const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 5px 0;
+`;
+
+const TextFieldWrapper = styled.input`
+  width: 60%;
 `;

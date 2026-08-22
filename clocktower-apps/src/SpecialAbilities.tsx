@@ -34,31 +34,33 @@ export const SpecialAbilities = ({
     removeSpecialAbility(indexToRemove);
 
   return (
-    <SpecialAbilitiesContainer>
+    <SectionContainer>
       <HeaderContainer>
         <div>Special Abilities</div>
         <Button onClick={onAddSpecialAbility} label="Add" />
       </HeaderContainer>
-      {specialAbilities.map((specialAbility, i) => (
-        <SpecialAbilityContainer key={i}>
-          <div>
-            {`Special ability ${i + 1}`}
-            <Button onClick={() => onDelete(i)} label="Delete" />
-          </div>
-          <SpecialAbilitiesField
-            specialAbility={specialAbility}
-            updateAbility={(
-              fieldToUpdate: SpecialAbilityFieldName,
-              newValue: string,
-            ) => onUpdate(fieldToUpdate, newValue, i)}
-          />
-        </SpecialAbilityContainer>
-      ))}
-    </SpecialAbilitiesContainer>
+      <SpecialAbilitiesContainer>
+        {specialAbilities.map((specialAbility, i) => (
+          <SpecialAbilityContainer key={i}>
+            <div>
+              {`Special ability ${i + 1}`}
+              <Button onClick={() => onDelete(i)} label="Delete" />
+            </div>
+            <SpecialAbilitiesField
+              specialAbility={specialAbility}
+              updateAbility={(
+                fieldToUpdate: SpecialAbilityFieldName,
+                newValue: string,
+              ) => onUpdate(fieldToUpdate, newValue, i)}
+            />
+          </SpecialAbilityContainer>
+        ))}
+      </SpecialAbilitiesContainer>
+    </SectionContainer>
   );
 };
 
-const SpecialAbilitiesContainer = styled.div`
+const SectionContainer = styled.div`
   margin: 5px 0;
 `;
 
@@ -68,7 +70,11 @@ const HeaderContainer = styled.div`
   justify-content: center;
 `;
 
+const SpecialAbilitiesContainer = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+`;
+
 const SpecialAbilityContainer = styled.div`
   display: block;
-  width: 50%;
 `;

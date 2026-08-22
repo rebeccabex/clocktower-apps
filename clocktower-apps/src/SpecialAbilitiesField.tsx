@@ -59,6 +59,7 @@ export const SpecialAbilitiesField = ({
         fieldName="value"
         updateField={(newValue: string) => handleOnChange("value", newValue)}
         label="Value"
+        value={specialAbility.value as string}
         maxLength={50}
       />
     </SpecialAbilityContainer>

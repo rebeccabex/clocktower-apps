@@ -31,7 +31,7 @@ export const JinxSection = ({
         <div>Jinxes</div>
         <Button onClick={onAdd} label="Add" />
       </HeaderContainer>
-      {jinxes.map((_, i) => (
+      {jinxes.map((jinx, i) => (
         <div>
           <div>
             {`Jinx ${i + 1}`}
@@ -40,6 +40,7 @@ export const JinxSection = ({
           <TextField
             fieldName="id"
             updateField={(newValue: string) => onUpdate("id", newValue, i)}
+            value={jinx.id}
             maxLength={50}
             label="Character ID"
             required
@@ -47,6 +48,7 @@ export const JinxSection = ({
           <TextField
             fieldName="reason"
             updateField={(newValue: string) => onUpdate("reason", newValue, i)}
+            value={jinx.reason}
             maxLength={500}
             label="Reason"
             required

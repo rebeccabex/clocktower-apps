@@ -63,6 +63,7 @@ export const NightOrderSection = ({
 const NightOrderSectionContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 5px 0;
 `;
 
 const LabelContainer = styled.label`

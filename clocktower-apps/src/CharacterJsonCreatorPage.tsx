@@ -146,6 +146,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="id"
             updateField={(newValue: string) => updateField("id", newValue)}
+            value={characterObject.id}
             maxLength={50}
             label="Id"
             pattern="[a-z0-9]"
@@ -154,6 +155,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="name"
             updateField={(newValue: string) => updateField("name", newValue)}
+            value={characterObject.name}
             maxLength={30}
             label="Character name"
             required
@@ -170,6 +172,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="ability"
             updateField={(newValue: string) => updateField("ability", newValue)}
+            value={characterObject.ability}
             maxLength={250}
             label="Ability"
             required
@@ -177,6 +180,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="edition"
             updateField={(newValue: string) => updateField("edition", newValue)}
+            value={characterObject.edition ?? ""}
             maxLength={50}
             label="Edition"
           />
@@ -248,6 +252,7 @@ export const CharacterJsonCreatorPage = () => {
             updateField={(newValue: string) =>
               updateField("firstNightReminder", newValue)
             }
+            value={characterObject.firstNightReminder ?? ""}
             maxLength={500}
             label="First Night Reminder"
             helpText="Leave blank if character doesn't act on the first night"
@@ -257,6 +262,7 @@ export const CharacterJsonCreatorPage = () => {
             updateField={(newValue: string) =>
               updateField("otherNightReminder", newValue)
             }
+            value={characterObject.otherNightReminder ?? ""}
             maxLength={500}
             label="Other Night Reminder"
             helpText="Leave blank if character doesn't wake at night (excluding the first night)"
@@ -264,6 +270,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="flavor"
             updateField={(newValue: string) => updateField("flavor", newValue)}
+            value={characterObject.flavor ?? ""}
             maxLength={50}
             label="Flavour text"
           />
