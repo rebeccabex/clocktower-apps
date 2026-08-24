@@ -54,6 +54,7 @@ export const NightOrderSection = ({
           type="number"
           onChange={(e) => onChangeNumericValue(e.target.value)}
           value={currentValue}
+          min={0}
         />
       </ValueContainer>
     </NightOrderSectionContainer>

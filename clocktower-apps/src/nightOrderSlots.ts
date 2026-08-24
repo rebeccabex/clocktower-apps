@@ -18,8 +18,8 @@ export const findNightOrderSlotByPosition = (
   return (
     nightOrderSlots.find(
       (slot) =>
-        slot.startingPosition === position ||
-        (slot.endingPosition ?? nightOrderSlots.length) >= position,
+        slot.startingPosition <= position &&
+        (slot.endingPosition ?? slot.startingPosition) >= position,
     ) ?? DoesntWakeSlot
   );
 };
