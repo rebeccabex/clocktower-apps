@@ -135,6 +135,10 @@ export const CharacterJsonCreatorPage = () => {
     navigator.clipboard.writeText(characterJsonString);
   };
 
+  const clearCharacter = () => {
+    setCharacterObject(emptyBotCCharacter);
+  };
+
   return (
     <>
       <div>Create Json for a Clocktower character</div>
@@ -291,7 +295,10 @@ export const CharacterJsonCreatorPage = () => {
           />
         </InputColumn>
         <OutputColumn>
-          <Button onClick={copyJsonToClipboard} label="Copy" />
+          <ButtonContainer>
+            <Button onClick={copyJsonToClipboard} label="Copy" />
+            <Button onClick={clearCharacter} label="Clear" />
+          </ButtonContainer>
           {characterJsonString}
         </OutputColumn>
       </PageLayout>
@@ -318,4 +325,10 @@ const OutputColumn = styled.div`
   border: 1px solid #000000;
   width: 50%;
   padding: 10px 0;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;

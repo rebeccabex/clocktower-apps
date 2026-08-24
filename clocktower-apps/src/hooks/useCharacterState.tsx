@@ -8,12 +8,7 @@ import { convertCharacterToJson, type BotCCharacter } from "../types";
 export default function useCharacterState(
   key: string,
   initialValue: BotCCharacter,
-): [
-  BotCCharacter,
-  (value: BotCCharacter) => void,
-  string,
-  // (value: string) => void,
-] {
+): [BotCCharacter, (value: BotCCharacter) => void, string] {
   const [state, setInternalState] = useState(initialValue);
   const characterString = convertCharacterToJson(state);
 
