@@ -32,7 +32,7 @@ export const JinxSection = ({
         <Button onClick={onAdd} label="Add" />
       </HeaderContainer>
       {jinxes.map((jinx, i) => (
-        <div>
+        <div key={i}>
           <div>
             {`Jinx ${i + 1}`}
             <Button onClick={() => onDelete(i)} label="Delete" />

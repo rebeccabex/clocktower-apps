@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { TextField } from "./components/TextField";
 import { ArrayField } from "./components/ArrayField";
@@ -8,7 +7,6 @@ import {
   type BotCCharacterArrayFieldName,
   type CharacterType,
   characterTypes,
-  convertCharacterToJson,
   type SpecialAbility,
   type SpecialAbilityFieldName,
   type Jinx,
@@ -20,14 +18,11 @@ import { Button } from "./components/Button";
 import { Dropdown } from "./components/Dropdown";
 import { NightOrderSection } from "./NightOrderSection";
 import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
-import usePersistentState from "./hooks/usePersistentState";
+import useCharacterState from "./hooks/useCharacterState";
 
 export const CharacterJsonCreatorPage = () => {
-  const [characterObject, setCharacterObject] = useState(emptyBotCCharacter);
-  const [characterJsonString, setCharacterJsonString] = usePersistentState(
-    "currentJson",
-    "{}",
-  );
+  const [characterObject, setCharacterObject, characterJsonString] =
+    useCharacterState("currentJson", emptyBotCCharacter);
 
   const updateField = <T,>(
     updatedField: BotCCharacterFieldName,
@@ -136,10 +131,6 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
-  useEffect(() => {
-    setCharacterJsonString(convertCharacterToJson(characterObject));
-  }, [characterObject]);
-
   const copyJsonToClipboard = () => {
     navigator.clipboard.writeText(characterJsonString);
   };
@@ -152,7 +143,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="id"
             updateField={(newValue: string) => updateField("id", newValue)}
-            value={characterObject.id}
+            value={characterObject.id ?? ""}
             maxLength={50}
             label="Id"
             pattern="[a-z0-9]"
@@ -161,7 +152,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="name"
             updateField={(newValue: string) => updateField("name", newValue)}
-            value={characterObject.name}
+            value={characterObject.name ?? ""}
             maxLength={30}
             label="Character name"
             required
@@ -178,7 +169,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="ability"
             updateField={(newValue: string) => updateField("ability", newValue)}
-            value={characterObject.ability}
+            value={characterObject.ability ?? ""}
             maxLength={250}
             label="Ability"
             required

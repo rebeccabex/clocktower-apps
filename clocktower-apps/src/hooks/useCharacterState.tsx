@@ -3,12 +3,19 @@
 // Retrieved 2026-08-21, License - CC BY-SA 4.0
 
 import { useEffect, useState } from "react";
+import { convertCharacterToJson, type BotCCharacter } from "../types";
 
-export default function usePersistentState<T>(
+export default function useCharacterState(
   key: string,
-  initialValue: T,
-): [T, (value: T) => void] {
-  const [state, setInternalState] = useState<T>(initialValue);
+  initialValue: BotCCharacter,
+): [
+  BotCCharacter,
+  (value: BotCCharacter) => void,
+  string,
+  // (value: string) => void,
+] {
+  const [state, setInternalState] = useState(initialValue);
+  const characterString = convertCharacterToJson(state);
 
   useEffect(() => {
     const value = localStorage.getItem(key);
@@ -18,10 +25,10 @@ export default function usePersistentState<T>(
     setInternalState(JSON.parse(value));
   }, [key]);
 
-  const setState = (value: T) => {
+  const setState = (value: BotCCharacter) => {
     localStorage.setItem(key, JSON.stringify(value));
     setInternalState(value);
   };
 
-  return [state, setState];
+  return [state, setState, characterString];
 }
