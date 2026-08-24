@@ -119,6 +119,8 @@ export type BotCCharacter = {
   team: CharacterType;
   ability: string;
   setup: boolean;
+  firstNight?: number;
+  otherNight?: number;
   firstNightReminder?: string;
   otherNightReminder?: string;
   flavor?: string;

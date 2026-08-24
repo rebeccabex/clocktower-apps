@@ -33,32 +33,33 @@ export const SpecialAbilitiesField = ({
         values={specialAbilities}
         onChange={(newValue: string) => handleOnChange("name", newValue)}
         label="Ability"
-        initialValue={specialAbility.name}
+        currentValue={specialAbility.name}
         required
       />
       <Dropdown
         values={specialAbilityTypes}
         onChange={(newValue: string) => handleOnChange("type", newValue)}
         label="Type"
-        initialValue={specialAbility.type}
+        currentValue={specialAbility.type}
         required
       />
       <Dropdown
         values={specialAbilityGlobalSettings}
         onChange={(newValue: string) => handleOnChange("global", newValue)}
         label="Global"
-        initialValue={specialAbility.global ?? undefined}
+        currentValue={specialAbility.global ?? undefined}
       />
       <Dropdown
         values={specialAbilityTimes}
         onChange={(newValue: string) => handleOnChange("time", newValue)}
         label="Time"
-        initialValue={specialAbility.time ?? undefined}
+        currentValue={specialAbility.time ?? undefined}
       />
       <TextField
         fieldName="value"
         updateField={(newValue: string) => handleOnChange("value", newValue)}
         label="Value"
+        value={specialAbility.value as string}
         maxLength={50}
       />
     </SpecialAbilityContainer>

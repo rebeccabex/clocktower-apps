@@ -18,6 +18,8 @@ import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
 import { Button } from "./components/Button";
 import { Dropdown } from "./components/Dropdown";
+import { NightOrderSection } from "./NightOrderSection";
+import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
 import usePersistentState from "./hooks/usePersistentState";
 
 export const CharacterJsonCreatorPage = () => {
@@ -150,6 +152,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="id"
             updateField={(newValue: string) => updateField("id", newValue)}
+            value={characterObject.id}
             maxLength={50}
             label="Id"
             pattern="[a-z0-9]"
@@ -158,13 +161,14 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="name"
             updateField={(newValue: string) => updateField("name", newValue)}
+            value={characterObject.name}
             maxLength={30}
             label="Character name"
             required
           />
           <Dropdown
             values={characterTypes}
-            initialValue={characterObject.team}
+            currentValue={characterObject.team}
             label="Character type"
             onChange={(newValue: string) =>
               updateField("team", newValue as CharacterType)
@@ -174,6 +178,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="ability"
             updateField={(newValue: string) => updateField("ability", newValue)}
+            value={characterObject.ability}
             maxLength={250}
             label="Ability"
             required
@@ -181,6 +186,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="edition"
             updateField={(newValue: string) => updateField("edition", newValue)}
+            value={characterObject.edition ?? ""}
             maxLength={50}
             label="Edition"
           />
@@ -229,11 +235,30 @@ export const CharacterJsonCreatorPage = () => {
             maxNumberOfElements={20}
             maxItemLength={25}
           />
+          <NightOrderSection
+            label="First night order"
+            nightOrderSlots={firstNightOrderSlots}
+            nightOrder="First"
+            currentValue={characterObject.firstNight ?? 0}
+            updateNightOrderValue={(newValue: number) =>
+              updateField("firstNight", newValue)
+            }
+          />
+          <NightOrderSection
+            label="Other nights order"
+            nightOrderSlots={otherNightOrderSlots}
+            nightOrder="Other"
+            currentValue={characterObject.otherNight ?? 0}
+            updateNightOrderValue={(newValue: number) =>
+              updateField("otherNight", newValue)
+            }
+          />
           <TextField
             fieldName="firstNightReminder"
             updateField={(newValue: string) =>
               updateField("firstNightReminder", newValue)
             }
+            value={characterObject.firstNightReminder ?? ""}
             maxLength={500}
             label="First Night Reminder"
             helpText="Leave blank if character doesn't act on the first night"
@@ -243,6 +268,7 @@ export const CharacterJsonCreatorPage = () => {
             updateField={(newValue: string) =>
               updateField("otherNightReminder", newValue)
             }
+            value={characterObject.otherNightReminder ?? ""}
             maxLength={500}
             label="Other Night Reminder"
             helpText="Leave blank if character doesn't wake at night (excluding the first night)"
@@ -250,6 +276,7 @@ export const CharacterJsonCreatorPage = () => {
           <TextField
             fieldName="flavor"
             updateField={(newValue: string) => updateField("flavor", newValue)}
+            value={characterObject.flavor ?? ""}
             maxLength={50}
             label="Flavour text"
           />

@@ -13,29 +13,36 @@ export type BaseFieldProps = {
 
 type TextFieldProps = BaseFieldProps & {
   updateField: (newValue: string) => void;
-  maxLength: number;
+  value: string;
+  maxLength?: number;
   required?: boolean;
   pattern?: string;
+  shouldDisplayLabel?: boolean;
 };
 
 export const TextField = ({
   fieldName,
   updateField,
+  value,
   maxLength,
   label,
   required,
   pattern,
+  shouldDisplayLabel = true,
 }: TextFieldProps) => {
   const onUpdate = (newValue: string) => updateField(newValue);
 
   return (
     <TextFieldContainer>
-      <LabelContainer htmlFor="characterName">
-        {label ?? fieldName}: {required && "*"}
-      </LabelContainer>
+      {shouldDisplayLabel && (
+        <LabelContainer htmlFor="characterName">
+          {label ?? fieldName}: {required && "*"}
+        </LabelContainer>
+      )}
       <InputContainer
         type="textbox"
         id={fieldName}
+        value={value}
         onChange={(e) => onUpdate(e.target.value)}
         maxLength={maxLength}
         pattern={pattern}
