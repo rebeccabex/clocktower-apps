@@ -74,4 +74,5 @@ const RowContainer = styled.div`
 
 const TextFieldWrapper = styled.input`
   width: 60%;
+  margin-left: 10px;
 `;

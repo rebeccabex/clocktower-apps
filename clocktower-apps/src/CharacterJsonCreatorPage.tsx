@@ -19,6 +19,7 @@ import { Dropdown } from "./components/Dropdown";
 import { NightOrderSection } from "./NightOrderSection";
 import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
 import useCharacterState from "./hooks/useCharacterState";
+import { JsonPrettyPrinter } from "./components/JsonPrettyPrinter";
 
 export const CharacterJsonCreatorPage = () => {
   const [characterObject, setCharacterObject, characterJsonString] =
@@ -299,7 +300,7 @@ export const CharacterJsonCreatorPage = () => {
             <Button onClick={copyJsonToClipboard} label="Copy" />
             <Button onClick={clearCharacter} label="Clear" />
           </ButtonContainer>
-          {characterJsonString}
+          <JsonPrettyPrinter input={characterJsonString} />
         </OutputColumn>
       </PageLayout>
     </>
