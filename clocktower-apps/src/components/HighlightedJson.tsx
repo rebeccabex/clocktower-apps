@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { TOKEN_COLOURS, tokenise } from "./jsonHandling";
+import styled from "styled-components";
 
 type HighlightedJsonProps = {
   text: string;
@@ -9,19 +10,7 @@ export const HighlightedJson = ({ text }: HighlightedJsonProps) => {
   const tokens = useMemo(() => tokenise(text), [text]);
 
   return (
-    <pre
-      style={{
-        margin: 0,
-        padding: "16px",
-        fontFamily:
-          'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
-        fontSize: "13px",
-        lineHeight: 1.6,
-        whiteSpace: "pre-wrap",
-        wordBreak: "break-word",
-        overflowWrap: "anywhere",
-      }}
-    >
+    <JsonContainer>
       {tokens.map((token, i) => {
         const colour = TOKEN_COLOURS[token.type];
 
@@ -30,20 +19,38 @@ export const HighlightedJson = ({ text }: HighlightedJsonProps) => {
           if (colonMatch) {
             return (
               <span key={i}>
-                <span style={{ color: colour }}>{colonMatch[1]}</span>
-                <span style={{ color: TOKEN_COLOURS.comma }}>
+                <HighlightedSpan $colour={colour}>
+                  {colonMatch[1]}
+                </HighlightedSpan>
+                <HighlightedSpan $colour={TOKEN_COLOURS.comma}>
                   {colonMatch[2]}
-                </span>
+                </HighlightedSpan>
               </span>
             );
           }
         }
         return (
-          <span key={i} style={colour ? { color: colour } : undefined}>
+          <HighlightedSpan key={i} $colour={colour}>
             {token.text}
-          </span>
+          </HighlightedSpan>
         );
       })}
-    </pre>
+    </JsonContainer>
   );
 };
+
+const JsonContainer = styled.pre`
+  margin: 0;
+  padding: 16px;
+  font-family: "ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace";
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  text-align: left;
+`;
+
+const HighlightedSpan = styled.span<{ $colour?: string }>`
+  color: ${(props) => props.$colour ?? undefined};
+`;
