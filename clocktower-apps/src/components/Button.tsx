@@ -15,23 +15,23 @@ export const Button = ({
   icon: Icon,
 }: ButtonProps) => {
   return (
-    <CopyButton onClick={onClick} disabled={disabled}>
+    <StyledButton onClick={onClick} disabled={disabled} $isDisabled={disabled}>
       {Icon && <Icon size={13} />}
       {label}
-    </CopyButton>
+    </StyledButton>
   );
 };
 
-const CopyButton = styled.button<{ $isFormatted?: boolean }>`
+const StyledButton = styled.button<{ $isDisabled?: boolean }>`
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: "#E5E7EB";
+  color: ${(props) => (props.$isDisabled ? "#4B5563" : "#E5E7EB")};
   background: transparent;
   border: 1px solid #374151;
   border-radius: 6px;
   padding: 4px 8px;
-  cursor: pointer;
+  cursor: ${(props) => (props.$isDisabled ? "not-allowed" : "pointer")};
   margin: 0 4px;
 `;

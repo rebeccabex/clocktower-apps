@@ -8,12 +8,16 @@ type JsonPrettyPrinterProps = {
   input: string;
   indent?: number;
   clearCharacter: () => void;
+  editable?: boolean;
+  setInput: (newValue: string) => void;
 };
 
 export const JsonPrettyPrinter = ({
   input,
   indent = 2,
   clearCharacter,
+  editable = false,
+  setInput,
 }: JsonPrettyPrinterProps) => {
   const [copied, setCopied] = useState(false);
 
@@ -44,16 +48,27 @@ export const JsonPrettyPrinter = ({
         <OptionsContainer>
           <OutputTitle>Formatted output</OutputTitle>
           <ButtonContainer>
-            <CopyButton
+            <Button
               onClick={handleCopy}
               disabled={!formatted}
               icon={copied ? Check : Copy}
               label={copied ? "Copied" : "Copy"}
-              $isFormatted={formatted !== null}
             />
             <Button onClick={clearCharacter} label="Clear" icon={Trash2} />
           </ButtonContainer>
         </OptionsContainer>
+
+        {editable && (
+          <InputAreaContainer>
+            <InputAreaLabel>JSON input</InputAreaLabel>
+            <StyledTextArea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              spellCheck={false}
+              $error={error}
+            />
+          </InputAreaContainer>
+        )}
 
         <JsonContainer>
           {error ? (
@@ -113,11 +128,6 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const CopyButton = styled(Button)<{ $isFormatted?: boolean }>`
-  color: ${(props) => (props.$isFormatted ? "#E5E7EB" : "#4B5563")};
-  cursor: ${(props) => (props.$isFormatted ? "pointer" : "not-allowed")};
-`;
-
 const JsonContainer = styled.div`
   max-height: 480px;
   overflow: auto;
@@ -142,4 +152,34 @@ const EmptyOutput = styled.div`
   padding: 16px;
   color: #6b7280;
   font-size: 13px;
+`;
+
+const InputAreaContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const InputAreaLabel = styled.label`
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
+
+const StyledTextArea = styled.textarea<{ $error: any }>`
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 10px 12px;
+  font-family: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace';
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid ${(props) => (props.$error ? "#F87171" : "#D1D5DB")};
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  background: #fafafa;
+  color: #111827;
 `;

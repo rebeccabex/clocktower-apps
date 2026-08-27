@@ -8,7 +8,12 @@ import { convertCharacterToJson, type BotCCharacter } from "../types";
 export default function useCharacterState(
   key: string,
   initialValue: BotCCharacter,
-): [BotCCharacter, (value: BotCCharacter) => void, string] {
+): [
+  BotCCharacter,
+  (value: BotCCharacter) => void,
+  string,
+  (value: string) => void,
+] {
   const [state, setInternalState] = useState(initialValue);
   const characterString = convertCharacterToJson(state);
 
@@ -25,5 +30,9 @@ export default function useCharacterState(
     setInternalState(value);
   };
 
-  return [state, setState, characterString];
+  const setCharacterString = (value: string) => {
+    setInternalState(JSON.parse(value));
+  };
+
+  return [state, setState, characterString, setCharacterString];
 }

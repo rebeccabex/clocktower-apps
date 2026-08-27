@@ -14,7 +14,6 @@ import {
 } from "./types";
 import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
-import { Button } from "./components/Button";
 import { Dropdown } from "./components/Dropdown";
 import { NightOrderSection } from "./NightOrderSection";
 import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
@@ -22,8 +21,12 @@ import useCharacterState from "./hooks/useCharacterState";
 import { JsonPrettyPrinter } from "./components/JsonPrettyPrinter";
 
 export const CharacterJsonCreatorPage = () => {
-  const [characterObject, setCharacterObject, characterJsonString] =
-    useCharacterState("currentJson", emptyBotCCharacter);
+  const [
+    characterObject,
+    setCharacterObject,
+    characterJsonString,
+    setCharacterString,
+  ] = useCharacterState("currentJson", emptyBotCCharacter);
 
   const updateField = <T,>(
     updatedField: BotCCharacterFieldName,
@@ -295,6 +298,8 @@ export const CharacterJsonCreatorPage = () => {
           <JsonPrettyPrinter
             input={characterJsonString}
             clearCharacter={clearCharacter}
+            editable={true}
+            setInput={setCharacterString}
           />
         </OutputColumn>
       </PageLayout>
