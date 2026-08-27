@@ -1,16 +1,19 @@
 import { useState, useMemo } from "react";
 import { HighlightedJson } from "./HighlightedJson";
-import { AlertCircle, Check, Copy } from "lucide-react";
+import { AlertCircle, Check, Copy, Trash2 } from "lucide-react";
 import styled from "styled-components";
+import { Button } from "./Button";
 
 type JsonPrettyPrinterProps = {
   input: string;
   indent?: number;
+  clearCharacter: () => void;
 };
 
 export const JsonPrettyPrinter = ({
   input,
   indent = 2,
+  clearCharacter,
 }: JsonPrettyPrinterProps) => {
   const [copied, setCopied] = useState(false);
 
@@ -40,14 +43,16 @@ export const JsonPrettyPrinter = ({
       <BorderedContainer>
         <OptionsContainer>
           <OutputTitle>Formatted output</OutputTitle>
-          <CopyButton
-            onClick={handleCopy}
-            disabled={!formatted}
-            $isFormatted={formatted !== null}
-          >
-            {copied ? <Check size={13} /> : <Copy size={13} />}
-            {copied ? "Copied" : "Copy"}
-          </CopyButton>
+          <ButtonContainer>
+            <CopyButton
+              onClick={handleCopy}
+              disabled={!formatted}
+              icon={copied ? Check : Copy}
+              label={copied ? "Copied" : "Copy"}
+              $isFormatted={formatted !== null}
+            />
+            <Button onClick={clearCharacter} label="Clear" icon={Trash2} />
+          </ButtonContainer>
         </OptionsContainer>
 
         <JsonContainer>
@@ -102,16 +107,14 @@ const OutputTitle = styled.span`
   font-weight: 600;
 `;
 
-const CopyButton = styled.button<{ $isFormatted?: boolean }>`
+const ButtonContainer = styled.div`
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const CopyButton = styled(Button)<{ $isFormatted?: boolean }>`
   color: ${(props) => (props.$isFormatted ? "#E5E7EB" : "#4B5563")};
-  background: transparent;
-  border: 1px solid #374151;
-  border-radius: 6px;
-  padding: 4px 8px;
   cursor: ${(props) => (props.$isFormatted ? "pointer" : "not-allowed")};
 `;
 

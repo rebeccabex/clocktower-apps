@@ -132,10 +132,6 @@ export const CharacterJsonCreatorPage = () => {
     });
   };
 
-  const copyJsonToClipboard = () => {
-    navigator.clipboard.writeText(characterJsonString);
-  };
-
   const clearCharacter = () => {
     setCharacterObject(emptyBotCCharacter);
   };
@@ -296,11 +292,10 @@ export const CharacterJsonCreatorPage = () => {
           />
         </InputColumn>
         <OutputColumn>
-          <ButtonContainer>
-            <Button onClick={copyJsonToClipboard} label="Copy" />
-            <Button onClick={clearCharacter} label="Clear" />
-          </ButtonContainer>
-          <JsonPrettyPrinter input={characterJsonString} />
+          <JsonPrettyPrinter
+            input={characterJsonString}
+            clearCharacter={clearCharacter}
+          />
         </OutputColumn>
       </PageLayout>
     </>
@@ -326,10 +321,4 @@ const OutputColumn = styled.div`
   border: 1px solid #000000;
   width: 50%;
   padding: 10px 0;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 `;
