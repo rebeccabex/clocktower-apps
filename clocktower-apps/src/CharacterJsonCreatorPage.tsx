@@ -173,6 +173,7 @@ export const CharacterJsonCreatorPage = () => {
               updateField("team", newValue as CharacterType)
             }
             required
+            displayTooltip={false}
           />
           <TextField
             fieldName="ability"

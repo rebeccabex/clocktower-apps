@@ -1,5 +1,6 @@
 import { Info } from "lucide-react";
 import { Tooltip } from "react-tooltip";
+import styled from "styled-components";
 
 export type TooltipWrapperProps = {
   tooltipId: string;
@@ -11,7 +12,16 @@ export const TooltipWrapper = ({
   tooltipContent,
 }: TooltipWrapperProps) => (
   <>
-    <Info data-tooltip-id={tooltipId} data-tooltip-content={tooltipContent} />
-    <Tooltip id={tooltipId} />
+    <Info
+      data-tooltip-id={tooltipId}
+      data-tooltip-content={tooltipContent}
+      size={20}
+    />
+    <StyledTooltip id={tooltipId} />
   </>
 );
+
+const StyledTooltip = styled(Tooltip)`
+  max-width: 400px;
+  overflow-wrap: break-word;
+`;

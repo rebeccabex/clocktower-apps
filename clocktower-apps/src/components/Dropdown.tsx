@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { TooltipWrapper } from "./TooltipWrapper";
 
 export const nullSelectionValue = "------" as string;
 
-type DropdownProps = {
+type BaseDropdownProps = {
   values: Array<string>;
   onChange: (newValue: string) => void;
   label: string;
@@ -11,6 +12,12 @@ type DropdownProps = {
   shouldDisplayLabel?: boolean;
 };
 
+type DropdownProps = BaseDropdownProps &
+  (
+    | { displayTooltip: false; tooltipId?: never; tooltipContent?: never }
+    | { displayTooltip: true; tooltipId: string; tooltipContent: string }
+  );
+
 export const Dropdown = ({
   values,
   onChange,
@@ -18,6 +25,7 @@ export const Dropdown = ({
   currentValue,
   required,
   shouldDisplayLabel = true,
+  ...props
 }: DropdownProps) => {
   const dropdownId = `dropdown_${label}`;
   if (!required && !values.includes(nullSelectionValue)) {
@@ -27,7 +35,15 @@ export const Dropdown = ({
   return (
     <DropdownContainer>
       {shouldDisplayLabel && (
-        <LabelContainer htmlFor={dropdownId}>{label}: </LabelContainer>
+        <LabelAndTooltipContainer>
+          <LabelContainer htmlFor={dropdownId}>{label}: </LabelContainer>
+          {props.displayTooltip && (
+            <TooltipWrapper
+              tooltipId={props.tooltipId}
+              tooltipContent={props.tooltipContent}
+            />
+          )}
+        </LabelAndTooltipContainer>
       )}
       <SelectContainer
         id={dropdownId}
@@ -50,8 +66,14 @@ const DropdownContainer = styled.div`
   margin: 5px 0;
 `;
 
-const LabelContainer = styled.label`
+const LabelAndTooltipContainer = styled.div`
   width: 50%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LabelContainer = styled.label`
+  width: 80%;
 `;
 
 const SelectContainer = styled.select`

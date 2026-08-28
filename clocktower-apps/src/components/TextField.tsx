@@ -42,7 +42,7 @@ export const TextField = ({
   return (
     <TextFieldContainer>
       {shouldDisplayLabel && (
-        <LabelAndTooltip>
+        <LabelAndTooltipContainer>
           <LabelContainer htmlFor="characterName">
             {label ?? fieldName}: {required && "*"}
           </LabelContainer>
@@ -52,7 +52,7 @@ export const TextField = ({
               tooltipContent={props.tooltipContent}
             />
           )}
-        </LabelAndTooltip>
+        </LabelAndTooltipContainer>
       )}
       <InputContainer
         type="textbox"
@@ -71,7 +71,7 @@ const TextFieldContainer = styled.div`
   margin: 5px 0;
 `;
 
-const LabelAndTooltip = styled.div`
+const LabelAndTooltipContainer = styled.div`
   width: 50%;
   display: flex;
   justify-content: space-between;

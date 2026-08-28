@@ -37,6 +37,7 @@ export const SpecialAbilitiesField = ({
         label="Ability"
         currentValue={specialAbility.name}
         required
+        displayTooltip={false}
       />
       <Dropdown
         values={specialAbilityTypes}
@@ -44,18 +45,27 @@ export const SpecialAbilitiesField = ({
         label="Type"
         currentValue={specialAbility.type}
         required
+        displayTooltip={true}
+        tooltipId={`special-ability-${index}-type`}
+        tooltipContent="The integration type, where the feature is used"
       />
       <Dropdown
         values={specialAbilityGlobalSettings}
         onChange={(newValue: string) => handleOnChange("global", newValue)}
         label="Global"
         currentValue={specialAbility.global ?? undefined}
+        displayTooltip={true}
+        tooltipId={`special-ability-${index}-global`}
+        tooltipContent="The character type that uses the ability if the character is not in play (eg Lil' Monsta)"
       />
       <Dropdown
         values={specialAbilityTimes}
         onChange={(newValue: string) => handleOnChange("time", newValue)}
         label="Time"
         currentValue={specialAbility.time ?? undefined}
+        displayTooltip={true}
+        tooltipId={`special-ability-${index}-time`}
+        tooltipContent="The point in the game where the special ability is used"
       />
       <TextField
         fieldName="value"
