@@ -2,8 +2,9 @@ import { Trash2 } from "lucide-react";
 import { Button } from "./Button";
 import { type BaseFieldProps } from "./TextField";
 import styled from "styled-components";
+import { TooltipWrapper } from "./TooltipWrapper";
 
-type ArrayFieldProps = BaseFieldProps & {
+type BaseArrayFieldProps = BaseFieldProps & {
   values: Array<string>;
   updateItem: (newValue: string, index: number) => void;
   addItem: () => void;
@@ -11,6 +12,12 @@ type ArrayFieldProps = BaseFieldProps & {
   maxItemLength?: number;
   maxNumberOfElements: number;
 };
+
+type ArrayFieldProps = BaseArrayFieldProps &
+  (
+    | { displayTooltip: false; tooltipId?: never; tooltipContent?: never }
+    | { displayTooltip: true; tooltipId: string; tooltipContent: string }
+  );
 
 export const ArrayField = ({
   fieldName,
@@ -21,6 +28,7 @@ export const ArrayField = ({
   removeItem,
   maxItemLength,
   maxNumberOfElements,
+  ...props
 }: ArrayFieldProps) => {
   const onUpdate = (newValue: string, index: number) =>
     updateItem(newValue, index);
@@ -33,6 +41,12 @@ export const ArrayField = ({
       <HeaderContainer>
         <div>{label}</div>
         <Button onClick={onAddItem} label="Add" disabled={isDisabled} />
+        {props.displayTooltip && (
+          <TooltipWrapper
+            tooltipId={props.tooltipId}
+            tooltipContent={props.tooltipContent}
+          />
+        )}
       </HeaderContainer>
       <FieldsContainer>
         {values.map((value, i) => (

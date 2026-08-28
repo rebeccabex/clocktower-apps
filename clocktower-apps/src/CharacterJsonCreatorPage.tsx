@@ -194,6 +194,14 @@ export const CharacterJsonCreatorPage = () => {
             tooltipId="edition-tooltip"
             tooltipContent="The ID of the home script for the character"
           />
+          <div>
+            <label htmlFor="isSetup">Setup?: </label>
+            <input
+              id="isSetup"
+              type="checkbox"
+              onChange={(e) => updateField("setup", e.target.checked)}
+            />
+          </div>
           <ArrayField
             fieldName="imageUrls"
             label="Image URLs"
@@ -204,15 +212,10 @@ export const CharacterJsonCreatorPage = () => {
             addItem={() => addItemToArray("imageUrls", "")}
             removeItem={(index) => removeItemFromArray("imageUrls", index)}
             maxNumberOfElements={3}
+            displayTooltip
+            tooltipId="tooltip-image-urls"
+            tooltipContent="For non-traveller characters, the icons should be regular alignment and flipped alignment, for travellers they should be unaligned, good alignment and evil alignment"
           />
-          <div>
-            <label htmlFor="isSetup">Setup?: </label>
-            <input
-              id="isSetup"
-              type="checkbox"
-              onChange={(e) => updateField("setup", e.target.checked)}
-            />
-          </div>
           <ArrayField
             fieldName="reminders"
             label="Character reminders"
@@ -224,6 +227,9 @@ export const CharacterJsonCreatorPage = () => {
             removeItem={(index) => removeItemFromArray("reminders", index)}
             maxNumberOfElements={20}
             maxItemLength={30}
+            displayTooltip
+            tooltipId="tooltip-reminders"
+            tooltipContent="Reminder tokens that are only selectable when the character is in play"
           />
           <ArrayField
             fieldName="remindersGlobal"
@@ -238,6 +244,9 @@ export const CharacterJsonCreatorPage = () => {
             }
             maxNumberOfElements={20}
             maxItemLength={25}
+            displayTooltip
+            tooltipId="tooltip-global-reminders"
+            tooltipContent="Reminder tokens that are selectable even when the character is not in play"
           />
           <NightOrderSection
             label="First night order"
