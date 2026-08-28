@@ -6,8 +6,9 @@ import {
   type NightOrderSlot,
 } from "./nightOrderSlots";
 import { FieldLabel } from "./components/FieldLabel";
+import { TooltipWrapper } from "./components/TooltipWrapper";
 
-type NightOrderSectionProps = {
+type BaseNightOrderSectionProps = {
   nightOrder: NightOrder;
   label: string;
   nightOrderSlots: Array<NightOrderSlot>;
@@ -15,12 +16,19 @@ type NightOrderSectionProps = {
   currentValue: number;
 };
 
+type NightOrderSectionProps = BaseNightOrderSectionProps &
+  (
+    | { displayTooltip: false; tooltipId?: never; tooltipContent?: never }
+    | { displayTooltip: true; tooltipId: string; tooltipContent: string }
+  );
+
 export const NightOrderSection = ({
   nightOrder,
   label,
   nightOrderSlots,
   updateNightOrderValue,
   currentValue,
+  ...props
 }: NightOrderSectionProps) => {
   const currentNightOrderSlot = createDisplayValueForNightOrderSlot(
     findNightOrderSlotByPosition(nightOrder, currentValue),
@@ -34,7 +42,15 @@ export const NightOrderSection = ({
 
   return (
     <NightOrderSectionContainer>
-      <LabelContainer>{label}: </LabelContainer>
+      <LabelAndTooltipContainer>
+        <LabelContainer>{label}: </LabelContainer>
+        {props.displayTooltip && (
+          <TooltipWrapper
+            tooltipId={props.tooltipId}
+            tooltipContent={props.tooltipContent}
+          />
+        )}
+      </LabelAndTooltipContainer>
       <ValueContainer>
         <SelectContainer
           id={label}
@@ -68,12 +84,18 @@ const NightOrderSectionContainer = styled.div`
   margin: 5px 0;
 `;
 
+const LabelAndTooltipContainer = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+`;
+
 const LabelContainer = styled(FieldLabel)`
-  width: 40%;
+  width: 80%;
 `;
 
 const ValueContainer = styled.div`
-  width: 60%;
+  width: 55%;
 `;
 
 const SelectContainer = styled.select`

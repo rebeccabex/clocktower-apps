@@ -256,6 +256,9 @@ export const CharacterJsonCreatorPage = () => {
             updateNightOrderValue={(newValue: number) =>
               updateField("firstNight", newValue)
             }
+            displayTooltip
+            tooltipId="tooltip-first-night-order"
+            tooltipContent="Set to 0 if the character doesn't wake on the first night"
           />
           <NightOrderSection
             label="Other nights order"
@@ -265,6 +268,9 @@ export const CharacterJsonCreatorPage = () => {
             updateNightOrderValue={(newValue: number) =>
               updateField("otherNight", newValue)
             }
+            displayTooltip
+            tooltipId="tooltip-other-night-order"
+            tooltipContent="Set to 0 if the character doesn't wake on nights other than the first"
           />
           <TextField
             fieldName="firstNightReminder"
