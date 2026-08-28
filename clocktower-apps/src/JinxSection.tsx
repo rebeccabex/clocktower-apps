@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Button } from "./components/Button";
 import { TextField } from "./components/TextField";
 import { defaultJinx, type Jinx, type JinxFieldName } from "./types";
+import { Trash2 } from "lucide-react";
 
 type JinxSectionProps = {
   jinxes: Array<Jinx>;
@@ -33,10 +34,10 @@ export const JinxSection = ({
       </HeaderContainer>
       {jinxes.map((jinx, i) => (
         <div key={i}>
-          <div>
+          <JinxHeaderRow>
             {`Jinx ${i + 1}`}
-            <Button onClick={() => onDelete(i)} label="Delete" />
-          </div>
+            <Button onClick={() => onDelete(i)} label="Delete" icon={Trash2} />
+          </JinxHeaderRow>
           <TextField
             fieldName="id"
             updateField={(newValue: string) => onUpdate("id", newValue, i)}
@@ -44,6 +45,9 @@ export const JinxSection = ({
             maxLength={50}
             label="Character ID"
             required
+            displayTooltip={true}
+            tooltipId={`jinx-${i}-id`}
+            tooltipContent="The ID of the character this character is jinxed with"
           />
           <TextField
             fieldName="reason"
@@ -52,6 +56,7 @@ export const JinxSection = ({
             maxLength={500}
             label="Reason"
             required
+            displayTooltip={false}
           />
         </div>
       ))}
@@ -66,5 +71,10 @@ const JinxesContainer = styled.div`
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+`;
+
+const JinxHeaderRow = styled.div`
+  display: flex;
   justify-content: center;
 `;

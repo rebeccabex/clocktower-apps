@@ -4,14 +4,14 @@ import type {
   JinxFieldName,
   SpecialAbilityFieldName,
 } from "../types";
+import { TooltipWrapper } from "./TooltipWrapper";
 
 export type BaseFieldProps = {
   fieldName: BotCCharacterFieldName | SpecialAbilityFieldName | JinxFieldName;
   label?: string;
-  helpText?: string;
 };
 
-type TextFieldProps = BaseFieldProps & {
+type BaseTextFieldProps = BaseFieldProps & {
   updateField: (newValue: string) => void;
   value: string;
   maxLength?: number;
@@ -19,6 +19,12 @@ type TextFieldProps = BaseFieldProps & {
   pattern?: string;
   shouldDisplayLabel?: boolean;
 };
+
+type TextFieldProps = BaseTextFieldProps &
+  (
+    | { displayTooltip: false; tooltipId?: never; tooltipContent?: never }
+    | { displayTooltip: true; tooltipId: string; tooltipContent: string }
+  );
 
 export const TextField = ({
   fieldName,
@@ -29,15 +35,24 @@ export const TextField = ({
   required,
   pattern,
   shouldDisplayLabel = true,
+  ...props
 }: TextFieldProps) => {
   const onUpdate = (newValue: string) => updateField(newValue);
 
   return (
     <TextFieldContainer>
       {shouldDisplayLabel && (
-        <LabelContainer htmlFor="characterName">
-          {label ?? fieldName}: {required && "*"}
-        </LabelContainer>
+        <LabelAndTooltip>
+          <LabelContainer htmlFor="characterName">
+            {label ?? fieldName}: {required && "*"}
+          </LabelContainer>
+          {props.displayTooltip && (
+            <TooltipWrapper
+              tooltipId={props.tooltipId}
+              tooltipContent={props.tooltipContent}
+            />
+          )}
+        </LabelAndTooltip>
       )}
       <InputContainer
         type="textbox"
@@ -56,11 +71,17 @@ const TextFieldContainer = styled.div`
   margin: 5px 0;
 `;
 
+const LabelAndTooltip = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+`;
+
 const LabelContainer = styled.label`
-  width: 40%;
+  width: 80%;
 `;
 
 const InputContainer = styled.input`
-  width: 60%;
+  width: 50%;
   margin: 0 10px;
 `;

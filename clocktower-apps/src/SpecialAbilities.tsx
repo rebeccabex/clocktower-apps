@@ -6,6 +6,7 @@ import {
   type SpecialAbilityFieldName,
 } from "./types";
 import { Button } from "./components/Button";
+import { Trash2 } from "lucide-react";
 
 type SpecialAbilitiesProps = {
   specialAbilities: Array<SpecialAbility>;
@@ -42,16 +43,21 @@ export const SpecialAbilities = ({
       <SpecialAbilitiesContainer>
         {specialAbilities.map((specialAbility, i) => (
           <SpecialAbilityContainer key={i}>
-            <div>
+            <SpecialAbilityHeaderRow>
               {`Special ability ${i + 1}`}
-              <Button onClick={() => onDelete(i)} label="Delete" />
-            </div>
+              <Button
+                onClick={() => onDelete(i)}
+                label="Delete"
+                icon={Trash2}
+              />
+            </SpecialAbilityHeaderRow>
             <SpecialAbilitiesField
               specialAbility={specialAbility}
               updateAbility={(
                 fieldToUpdate: SpecialAbilityFieldName,
                 newValue: string,
               ) => onUpdate(fieldToUpdate, newValue, i)}
+              index={i}
             />
           </SpecialAbilityContainer>
         ))}
@@ -77,4 +83,9 @@ const SpecialAbilitiesContainer = styled.div`
 
 const SpecialAbilityContainer = styled.div`
   display: block;
+`;
+
+const SpecialAbilityHeaderRow = styled.div`
+  display: flex;
+  justify-content: center;
 `;

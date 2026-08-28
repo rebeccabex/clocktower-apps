@@ -16,11 +16,13 @@ type SpecialAbilitiesFieldProps = {
     fieldToUpdate: SpecialAbilityFieldName,
     newValue: string,
   ) => void;
+  index: number;
 };
 
 export const SpecialAbilitiesField = ({
   specialAbility,
   updateAbility,
+  index,
 }: SpecialAbilitiesFieldProps) => {
   const handleOnChange = (
     fieldToUpdate: SpecialAbilityFieldName,
@@ -61,6 +63,9 @@ export const SpecialAbilitiesField = ({
         label="Value"
         value={specialAbility.value as string}
         maxLength={50}
+        displayTooltip={true}
+        tooltipId={`special-ability-${index}-value`}
+        tooltipContent="A text or numerical value used by the special ability"
       />
     </SpecialAbilityContainer>
   );

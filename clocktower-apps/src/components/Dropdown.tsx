@@ -51,10 +51,10 @@ const DropdownContainer = styled.div`
 `;
 
 const LabelContainer = styled.label`
-  width: 40%;
+  width: 50%;
 `;
 
 const SelectContainer = styled.select`
-  width: 60%;
+  width: 50%;
   margin: 0 10px;
 `;

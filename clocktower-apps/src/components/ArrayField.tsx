@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import { Button } from "./Button";
 import { type BaseFieldProps } from "./TextField";
 import styled from "styled-components";
@@ -43,7 +44,11 @@ export const ArrayField = ({
               maxLength={maxItemLength}
               value={value}
             />
-            <Button onClick={() => onRemoveItem(i)} label="Delete" />
+            <Button
+              onClick={() => onRemoveItem(i)}
+              label="Delete"
+              icon={Trash2}
+            />
           </RowContainer>
         ))}
       </FieldsContainer>

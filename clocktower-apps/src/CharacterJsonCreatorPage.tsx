@@ -152,6 +152,9 @@ export const CharacterJsonCreatorPage = () => {
             label="Id"
             pattern="[a-z0-9]"
             required
+            displayTooltip={true}
+            tooltipId="id-tooltip"
+            tooltipContent="Must be lower case alphanumeric without spaces"
           />
           <TextField
             fieldName="name"
@@ -160,6 +163,7 @@ export const CharacterJsonCreatorPage = () => {
             maxLength={30}
             label="Character name"
             required
+            displayTooltip={false}
           />
           <Dropdown
             values={characterTypes}
@@ -177,6 +181,7 @@ export const CharacterJsonCreatorPage = () => {
             maxLength={250}
             label="Ability"
             required
+            displayTooltip={false}
           />
           <TextField
             fieldName="edition"
@@ -184,6 +189,9 @@ export const CharacterJsonCreatorPage = () => {
             value={characterObject.edition ?? ""}
             maxLength={50}
             label="Edition"
+            displayTooltip={true}
+            tooltipId="edition-tooltip"
+            tooltipContent="The ID of the home script for the character"
           />
           <ArrayField
             fieldName="imageUrls"
@@ -256,7 +264,9 @@ export const CharacterJsonCreatorPage = () => {
             value={characterObject.firstNightReminder ?? ""}
             maxLength={500}
             label="First Night Reminder"
-            helpText="Leave blank if character doesn't act on the first night"
+            displayTooltip={true}
+            tooltipId="firstNightReminderTooltip"
+            tooltipContent="Leave blank if character doesn't act on the first night"
           />
           <TextField
             fieldName="otherNightReminder"
@@ -266,7 +276,9 @@ export const CharacterJsonCreatorPage = () => {
             value={characterObject.otherNightReminder ?? ""}
             maxLength={500}
             label="Other Night Reminder"
-            helpText="Leave blank if character doesn't wake at night (excluding the first night)"
+            displayTooltip={true}
+            tooltipId="firstNightReminderTooltip"
+            tooltipContent="Leave blank if character doesn't wake at night (excluding the first night)"
           />
           <TextField
             fieldName="flavor"
@@ -274,6 +286,7 @@ export const CharacterJsonCreatorPage = () => {
             value={characterObject.flavor ?? ""}
             maxLength={50}
             label="Flavour text"
+            displayTooltip={false}
           />
           <SpecialAbilities
             specialAbilities={characterObject.specialAbilities ?? []}
