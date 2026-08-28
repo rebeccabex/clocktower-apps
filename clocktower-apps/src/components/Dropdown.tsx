@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { TooltipWrapper } from "./TooltipWrapper";
+import { FieldLabel } from "./FieldLabel";
 
 export const nullSelectionValue = "------" as string;
 
@@ -72,7 +73,7 @@ const LabelAndTooltipContainer = styled.div`
   justify-content: space-between;
 `;
 
-const LabelContainer = styled.label`
+const LabelContainer = styled(FieldLabel)`
   width: 80%;
 `;
 

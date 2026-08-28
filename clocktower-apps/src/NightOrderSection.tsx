@@ -5,6 +5,7 @@ import {
   type NightOrder,
   type NightOrderSlot,
 } from "./nightOrderSlots";
+import { FieldLabel } from "./components/FieldLabel";
 
 type NightOrderSectionProps = {
   nightOrder: NightOrder;
@@ -67,7 +68,7 @@ const NightOrderSectionContainer = styled.div`
   margin: 5px 0;
 `;
 
-const LabelContainer = styled.label`
+const LabelContainer = styled(FieldLabel)`
   width: 40%;
 `;
 

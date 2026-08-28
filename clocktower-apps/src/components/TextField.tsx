@@ -5,6 +5,7 @@ import type {
   SpecialAbilityFieldName,
 } from "../types";
 import { TooltipWrapper } from "./TooltipWrapper";
+import { FieldLabel } from "./FieldLabel";
 
 export type BaseFieldProps = {
   fieldName: BotCCharacterFieldName | SpecialAbilityFieldName | JinxFieldName;
@@ -77,7 +78,7 @@ const LabelAndTooltipContainer = styled.div`
   justify-content: space-between;
 `;
 
-const LabelContainer = styled.label`
+const LabelContainer = styled(FieldLabel)`
   width: 80%;
 `;
 
