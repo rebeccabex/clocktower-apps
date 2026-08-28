@@ -11,6 +11,7 @@ type BaseDropdownProps = {
   currentValue?: string;
   required?: boolean;
   shouldDisplayLabel?: boolean;
+  mappingForDisplay?: { [key: string]: string };
 };
 
 type DropdownProps = BaseDropdownProps &
@@ -26,12 +27,20 @@ export const Dropdown = ({
   currentValue,
   required,
   shouldDisplayLabel = true,
+  mappingForDisplay,
   ...props
 }: DropdownProps) => {
   const dropdownId = `dropdown_${label}`;
   if (!required && !values.includes(nullSelectionValue)) {
     values.unshift(nullSelectionValue);
   }
+
+  const getDisplayValue = (value: string) => {
+    if (!mappingForDisplay || !Object.keys(mappingForDisplay).includes(value)) {
+      return value;
+    }
+    return mappingForDisplay[value];
+  };
 
   return (
     <DropdownContainer>
@@ -49,11 +58,11 @@ export const Dropdown = ({
       <SelectContainer
         id={dropdownId}
         onChange={(e) => onChange(e.target.value)}
-        value={currentValue}
+        value={currentValue && getDisplayValue(currentValue)}
       >
         {values.map((value) => (
           <option key={`${label}-${value}`} value={value}>
-            {value}
+            {getDisplayValue(value)}
           </option>
         ))}
       </SelectContainer>

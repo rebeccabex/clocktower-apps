@@ -11,6 +11,7 @@ import {
   type SpecialAbilityFieldName,
   type Jinx,
   type JinxFieldName,
+  characterType,
 } from "./types";
 import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
@@ -172,6 +173,7 @@ export const CharacterJsonCreatorPage = () => {
             onChange={(newValue: string) =>
               updateField("team", newValue as CharacterType)
             }
+            mappingForDisplay={characterType}
             required
             displayTooltip={false}
           />

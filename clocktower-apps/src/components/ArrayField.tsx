@@ -92,6 +92,6 @@ const RowContainer = styled.div`
 `;
 
 const TextFieldWrapper = styled.input`
-  width: 60%;
+  width: 80%;
   margin-left: 10px;
 `;

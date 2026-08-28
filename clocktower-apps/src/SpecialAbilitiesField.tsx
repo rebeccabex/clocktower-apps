@@ -3,8 +3,12 @@ import { Dropdown } from "./components/Dropdown";
 import { TextField } from "./components/TextField";
 import {
   specialAbilities,
+  specialAbilityGlobal,
   specialAbilityGlobalSettings,
+  specialAbilityName,
+  specialAbilityTime,
   specialAbilityTimes,
+  specialAbilityType,
   specialAbilityTypes,
   type SpecialAbility,
   type SpecialAbilityFieldName,
@@ -36,6 +40,7 @@ export const SpecialAbilitiesField = ({
         onChange={(newValue: string) => handleOnChange("name", newValue)}
         label="Ability"
         currentValue={specialAbility.name}
+        mappingForDisplay={specialAbilityName}
         required
         displayTooltip={false}
       />
@@ -44,8 +49,9 @@ export const SpecialAbilitiesField = ({
         onChange={(newValue: string) => handleOnChange("type", newValue)}
         label="Type"
         currentValue={specialAbility.type}
+        mappingForDisplay={specialAbilityType}
         required
-        displayTooltip={true}
+        displayTooltip
         tooltipId={`special-ability-${index}-type`}
         tooltipContent="The integration type, where the feature is used"
       />
@@ -54,7 +60,8 @@ export const SpecialAbilitiesField = ({
         onChange={(newValue: string) => handleOnChange("global", newValue)}
         label="Global"
         currentValue={specialAbility.global ?? undefined}
-        displayTooltip={true}
+        mappingForDisplay={specialAbilityGlobal}
+        displayTooltip
         tooltipId={`special-ability-${index}-global`}
         tooltipContent="The character type that uses the ability if the character is not in play (eg Lil' Monsta)"
       />
@@ -63,7 +70,8 @@ export const SpecialAbilitiesField = ({
         onChange={(newValue: string) => handleOnChange("time", newValue)}
         label="Time"
         currentValue={specialAbility.time ?? undefined}
-        displayTooltip={true}
+        mappingForDisplay={specialAbilityTime}
+        displayTooltip
         tooltipId={`special-ability-${index}-time`}
         tooltipContent="The point in the game where the special ability is used"
       />
@@ -73,7 +81,7 @@ export const SpecialAbilitiesField = ({
         label="Value"
         value={specialAbility.value as string}
         maxLength={50}
-        displayTooltip={true}
+        displayTooltip
         tooltipId={`special-ability-${index}-value`}
         tooltipContent="A text or numerical value used by the special ability"
       />

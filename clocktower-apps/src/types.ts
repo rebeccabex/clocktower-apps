@@ -5,7 +5,7 @@ export const characterType = {
   outsider: "Outsider",
   minion: "Minion",
   demon: "Demon",
-  traveller: "Traveller",
+  traveler: "Traveler",
   fabled: "Fabled",
   loric: "Loric",
 };
@@ -30,21 +30,21 @@ export const specialAbilityTypes = Object.keys(
 ) as Array<SpecialAbilityType>;
 
 export const specialAbilityName = {
-  grimoire: "grimoire",
-  pointing: "pointing",
-  ghostVotes: "ghost-votes",
-  distributeRoles: "distribute-roles",
-  bagDisabled: "bag-disabled",
-  bagDuplicate: "bag-duplicate",
-  evilDuplicate: "evil-duplicate",
-  goodDuplicate: "good-duplicate",
-  multiplier: "multiplier",
-  hidden: "hidden",
-  replaceCharacter: "replace-character",
-  player: "player",
-  card: "card",
-  openEyes: "open-eyes",
-  public: "public",
+  grimoire: "Grimoire",
+  pointing: "Pointing",
+  ghostVotes: "Ghost votes",
+  distributeRoles: "Distribute roles",
+  bagDisabled: "Bag disabled",
+  bagDuplicate: "Bag duplicate",
+  evilDuplicate: "Evil duplicate",
+  goodDuplicate: "Good duplicate",
+  multiplier: "Multiplier",
+  hidden: "Hidden",
+  replaceCharacter: "Replace character",
+  player: "Player",
+  card: "Card",
+  openEyes: "Open eyes",
+  public: "Public",
 };
 export type SpecialAbilityName = keyof typeof specialAbilityName;
 export const specialAbilities = Object.keys(
@@ -52,13 +52,13 @@ export const specialAbilities = Object.keys(
 ) as Array<SpecialAbilityName>;
 
 export const specialAbilityTime = {
-  pregame: "pregame",
-  day: "day",
-  night: "night",
-  firstNight: "firstNight",
-  firstDay: "firstDay",
-  otherNight: "otherNight",
-  otherDay: "otherDay",
+  pregame: "Pregame",
+  day: "Day",
+  night: "Night",
+  firstNight: "First night",
+  firstDay: "First day",
+  otherNight: "Other night",
+  otherDay: "Other day",
 };
 export type SpecialAbilityTime = keyof typeof specialAbilityTime;
 export const specialAbilityTimes = Object.keys(
@@ -66,12 +66,12 @@ export const specialAbilityTimes = Object.keys(
 ) as Array<SpecialAbilityTime>;
 
 export const specialAbilityGlobal = {
-  townsfolk: "townsfolk",
-  outsider: "outsider",
-  minion: "minion",
-  demon: "demon",
-  traveller: "traveller",
-  dead: "dead",
+  townsfolk: "Townsfolk",
+  outsider: "Outsider",
+  minion: "Minion",
+  demon: "Demon",
+  traveler: "Traveler",
+  dead: "Dead",
 };
 export type SpecialAbilityGlobal = keyof typeof specialAbilityGlobal;
 export const specialAbilityGlobalSettings = Object.keys(
