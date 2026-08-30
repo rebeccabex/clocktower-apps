@@ -329,7 +329,6 @@ export const CharacterJsonCreatorPage = () => {
           <JsonPrettyPrinter
             input={characterJsonString}
             clearCharacter={clearCharacter}
-            editable={true}
             setInput={setCharacterString}
           />
         </OutputColumn>

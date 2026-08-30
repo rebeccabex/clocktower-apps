@@ -1,6 +1,13 @@
 import { useState, useMemo } from "react";
 import { HighlightedJson } from "./HighlightedJson";
-import { AlertCircle, Check, Copy, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Trash2,
+} from "lucide-react";
 import styled from "styled-components";
 import { Button } from "./Button";
 
@@ -8,7 +15,6 @@ type JsonPrettyPrinterProps = {
   input: string;
   indent?: number;
   clearCharacter: () => void;
-  editable?: boolean;
   setInput: (newValue: string) => void;
 };
 
@@ -16,10 +22,10 @@ export const JsonPrettyPrinter = ({
   input,
   indent = 2,
   clearCharacter,
-  editable = false,
   setInput,
 }: JsonPrettyPrinterProps) => {
   const [copied, setCopied] = useState(false);
+  const [showInputArea, setShowInputArea] = useState(false);
 
   const { formatted, error } = useMemo(() => {
     if (!input.trim()) return { formatted: "", error: null };
@@ -49,6 +55,11 @@ export const JsonPrettyPrinter = ({
           <OutputTitle>Formatted output</OutputTitle>
           <ButtonContainer>
             <Button
+              onClick={() => setShowInputArea(!showInputArea)}
+              label={showInputArea ? "Close JSON input" : "Open JSON input"}
+              icon={showInputArea ? ChevronUp : ChevronDown}
+            />
+            <Button
               onClick={handleCopy}
               disabled={!formatted}
               icon={copied ? Check : Copy}
@@ -58,17 +69,20 @@ export const JsonPrettyPrinter = ({
           </ButtonContainer>
         </OptionsContainer>
 
-        {editable && (
-          <InputAreaContainer>
-            <InputAreaLabel>JSON input</InputAreaLabel>
-            <StyledTextArea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              spellCheck={false}
-              $error={error}
-            />
-          </InputAreaContainer>
-        )}
+        <InputAreaContainer $showInputArea={showInputArea}>
+          <TextAreaOuterContainer>
+            <TextAreaContainer $showInputArea={showInputArea}>
+              <InputAreaLabel>JSON input</InputAreaLabel>
+              <StyledTextArea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                spellCheck={false}
+                tabIndex={showInputArea ? 0 : -1}
+                $error={error}
+              />
+            </TextAreaContainer>
+          </TextAreaOuterContainer>
+        </InputAreaContainer>
 
         <JsonContainer>
           {error ? (
@@ -154,10 +168,10 @@ const EmptyOutput = styled.div`
   font-size: 13px;
 `;
 
-const InputAreaContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+const InputAreaContainer = styled.div<{ $showInputArea: boolean }>`
+  display: grid;
+  grid-template-rows: ${(props) => (props.$showInputArea ? "1fr" : "0fr")};
+  transition: grid-template-rows 280ms cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 const InputAreaLabel = styled.label`
@@ -166,6 +180,20 @@ const InputAreaLabel = styled.label`
   color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+`;
+
+const TextAreaOuterContainer = styled.div`
+  overflow: hidden;
+  minheight: 0;
+`;
+
+const TextAreaContainer = styled.div<{ $showInputArea: boolean }>`
+  opacity: ${(props) => (props.$showInputArea ? 1 : 0)};
+  transform: ${(props) => (props.$showInputArea ? "translateY(0)" : "translateY(-4px)")};
+  transition: opacity 200ms ease
+    ${(props) => (props.$showInputArea ? "80ms" : "0ms")} transform 200ms ease
+    ${(props) => (props.$showInputArea ? "80ms" : "0ms")};
+  padding-top: 2px;
 `;
 
 const StyledTextArea = styled.textarea<{ $error: any }>`
