@@ -152,6 +152,7 @@ const removeEmptyArrayValues = (character: BotCCharacter): BotCCharacter => ({
     time: ability.time === nullSelectionValue ? undefined : ability.time,
     global: ability.global === nullSelectionValue ? undefined : ability.global,
   })),
+  jinxes: character.jinxes?.filter((jinx) => jinx.id && jinx.reason),
 });
 
 const removeEmptyOptionalFields = (
@@ -176,6 +177,10 @@ const removeEmptyOptionalFields = (
   specialAbilities:
     character.specialAbilities && character.specialAbilities.length > 0
       ? character.specialAbilities
+      : undefined,
+  jinxes:
+    character.jinxes && character.jinxes.length > 0
+      ? character.jinxes
       : undefined,
 });
 
