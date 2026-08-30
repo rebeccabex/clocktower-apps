@@ -111,6 +111,7 @@ const OutputContainer = styled.div`
     system-ui,
     -apple-system,
     sans-serif;
+  height: 90vh;
 `;
 
 const BorderedContainer = styled.div`
@@ -119,6 +120,7 @@ const BorderedContainer = styled.div`
   background: #1f2430;
   border: 1px solid #2d3340;
   position: relative;
+  height: 100%;
 `;
 
 const OptionsContainer = styled.div`
@@ -143,8 +145,8 @@ const ButtonContainer = styled.div`
 `;
 
 const JsonContainer = styled.div`
-  max-height: 480px;
   overflow: auto;
+  height: 100%;
 `;
 
 const ErrorContainer = styled.div`

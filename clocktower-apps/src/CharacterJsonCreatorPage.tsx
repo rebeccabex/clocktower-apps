@@ -142,7 +142,9 @@ export const CharacterJsonCreatorPage = () => {
 
   return (
     <>
-      <div>Create Json for a Clocktower character</div>
+      <HeaderContainer>
+        Blood on the Clocktower JSON character creator
+      </HeaderContainer>
       <PageLayout>
         <InputColumn>
           <TextField
@@ -336,6 +338,12 @@ export const CharacterJsonCreatorPage = () => {
     </>
   );
 };
+
+const HeaderContainer = styled.div`
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 0;
+`;
 
 const PageLayout = styled.div`
   display: flex;
