@@ -343,6 +343,9 @@ const HeaderContainer = styled.div`
   font-size: 20px;
   font-weight: 600;
   padding: 10px 0;
+  position: sticky;
+  top: 0px;
+  background-color: #16171d;
 `;
 
 const PageLayout = styled.div`

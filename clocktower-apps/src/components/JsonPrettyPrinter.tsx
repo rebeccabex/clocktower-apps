@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import styled from "styled-components";
 import { Button } from "./Button";
+import { APP_WIDTH } from "../globalConstants";
 
 type JsonPrettyPrinterProps = {
   input: string;
@@ -49,7 +50,7 @@ export const JsonPrettyPrinter = ({
   };
 
   return (
-    <OutputContainer>
+    <OutputContainer $width={APP_WIDTH / 2}>
       <BorderedContainer>
         <OptionsContainer>
           <OutputTitle>Formatted output</OutputTitle>
@@ -101,17 +102,19 @@ export const JsonPrettyPrinter = ({
   );
 };
 
-const OutputContainer = styled.div`
+const OutputContainer = styled.div<{ $width: number }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 100%;
-  max-width: 720px;
+  max-width: ${(props) => props.$width}px;
   font-family:
     system-ui,
     -apple-system,
     sans-serif;
   height: 90vh;
+  position: fixed;
+  top: 45;
+  left: 50%;
 `;
 
 const BorderedContainer = styled.div`
@@ -147,6 +150,7 @@ const ButtonContainer = styled.div`
 const JsonContainer = styled.div`
   overflow: auto;
   height: 100%;
+  flex: 1;
 `;
 
 const ErrorContainer = styled.div`
