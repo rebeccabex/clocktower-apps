@@ -218,7 +218,7 @@ export const CharacterJsonCreatorPage = () => {
             maxNumberOfElements={3}
             displayTooltip
             tooltipId="tooltip-image-urls"
-            tooltipContent="For non-traveller characters, the icons should be regular alignment and flipped alignment, for travellers they should be unaligned, good alignment and evil alignment"
+            tooltipContent="For non-traveller player characters, the icons should be regular alignment and flipped alignment, for travellers they should be unaligned, good alignment and evil alignment"
           />
           <ArrayField
             fieldName="reminders"

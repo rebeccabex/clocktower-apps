@@ -58,7 +58,7 @@ export const Dropdown = ({
       <SelectContainer
         id={dropdownId}
         onChange={(e) => onChange(e.target.value)}
-        value={currentValue && getDisplayValue(currentValue)}
+        value={currentValue}
       >
         {values.map((value) => (
           <option key={`${label}-${value}`} value={value}>
