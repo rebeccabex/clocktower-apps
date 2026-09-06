@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useLayoutEffect } from "react";
 import { HighlightedJson } from "./HighlightedJson";
 import {
   AlertCircle,
@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import styled from "styled-components";
 import { Button } from "./Button";
-import { APP_WIDTH } from "../globalConstants";
 
 type JsonPrettyPrinterProps = {
   input: string;
@@ -27,6 +26,8 @@ export const JsonPrettyPrinter = ({
 }: JsonPrettyPrinterProps) => {
   const [copied, setCopied] = useState(false);
   const [showInputArea, setShowInputArea] = useState(false);
+  const parentRef = useRef(null);
+  const [width, setWidth] = useState(0);
 
   const { formatted, error } = useMemo(() => {
     if (!input.trim()) return { formatted: "", error: null };
@@ -49,64 +50,80 @@ export const JsonPrettyPrinter = ({
     }
   };
 
+  useLayoutEffect(() => {
+    if (!parentRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      setWidth(entries[0].contentRect.width);
+    });
+    observer.observe(parentRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <OutputContainer $width={APP_WIDTH / 2}>
-      <BorderedContainer>
-        <OptionsContainer>
-          <OutputTitle>Formatted output</OutputTitle>
-          <ButtonContainer>
-            <Button
-              onClick={() => setShowInputArea(!showInputArea)}
-              label={showInputArea ? "Close JSON input" : "Open JSON input"}
-              icon={showInputArea ? ChevronUp : ChevronDown}
-            />
-            <Button
-              onClick={handleCopy}
-              disabled={!formatted}
-              icon={copied ? Check : Copy}
-              label={copied ? "Copied" : "Copy"}
-            />
-            <Button onClick={clearCharacter} label="Clear" icon={Trash2} />
-          </ButtonContainer>
-        </OptionsContainer>
-
-        <InputAreaContainer $showInputArea={showInputArea}>
-          <TextAreaOuterContainer>
-            <TextAreaContainer $showInputArea={showInputArea}>
-              <InputAreaLabel>JSON input</InputAreaLabel>
-              <StyledTextArea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                spellCheck={false}
-                tabIndex={showInputArea ? 0 : -1}
-                $error={error}
+    <FixedContainer ref={parentRef}>
+      <OutputContainer $width={width}>
+        <BorderedContainer>
+          <OptionsContainer>
+            <OutputTitle>Formatted output</OutputTitle>
+            <ButtonContainer>
+              <Button
+                onClick={() => setShowInputArea(!showInputArea)}
+                label={showInputArea ? "Close JSON input" : "Open JSON input"}
+                icon={showInputArea ? ChevronUp : ChevronDown}
               />
-            </TextAreaContainer>
-          </TextAreaOuterContainer>
-        </InputAreaContainer>
+              <Button
+                onClick={handleCopy}
+                disabled={!formatted}
+                icon={copied ? Check : Copy}
+                label={copied ? "Copied" : "Copy"}
+              />
+              <Button onClick={clearCharacter} label="Clear" icon={Trash2} />
+            </ButtonContainer>
+          </OptionsContainer>
 
-        <JsonContainer>
-          {error ? (
-            <ErrorContainer>
-              <StyledAlertCircle size={16} />
-              <span>Invalid JSON: {error}</span>
-            </ErrorContainer>
-          ) : formatted ? (
-            <HighlightedJson text={formatted} />
-          ) : (
-            <EmptyOutput>Nothing to display yet.</EmptyOutput>
-          )}
-        </JsonContainer>
-      </BorderedContainer>
-    </OutputContainer>
+          <InputAreaContainer $showInputArea={showInputArea}>
+            <TextAreaOuterContainer>
+              <TextAreaContainer $showInputArea={showInputArea}>
+                <InputAreaLabel>JSON input</InputAreaLabel>
+                <StyledTextArea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  spellCheck={false}
+                  tabIndex={showInputArea ? 0 : -1}
+                  $error={error}
+                />
+              </TextAreaContainer>
+            </TextAreaOuterContainer>
+          </InputAreaContainer>
+
+          <JsonContainer>
+            {error ? (
+              <ErrorContainer>
+                <StyledAlertCircle size={16} />
+                <span>Invalid JSON: {error}</span>
+              </ErrorContainer>
+            ) : formatted ? (
+              <HighlightedJson text={formatted} />
+            ) : (
+              <EmptyOutput>Nothing to display yet.</EmptyOutput>
+            )}
+          </JsonContainer>
+        </BorderedContainer>
+      </OutputContainer>
+    </FixedContainer>
   );
 };
+
+const FixedContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
 
 const OutputContainer = styled.div<{ $width: number }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: ${(props) => props.$width}px;
+  width: ${(props) => props.$width}px;
   font-family:
     system-ui,
     -apple-system,
