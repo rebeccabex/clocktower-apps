@@ -31,6 +31,7 @@ export default function useCharacterState(
   };
 
   const setCharacterString = (value: string) => {
+    localStorage.setItem(key, value);
     setInternalState(JSON.parse(value));
   };
 
