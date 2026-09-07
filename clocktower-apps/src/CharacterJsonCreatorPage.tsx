@@ -366,5 +366,5 @@ const OutputColumn = styled.div`
   flex-direction: column;
   border: 1px solid #000000;
   width: 50%;
-  padding: 10px 0;
+  padding-bottom: 5px;
 `;

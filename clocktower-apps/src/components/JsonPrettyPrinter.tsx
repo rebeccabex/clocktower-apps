@@ -1,15 +1,9 @@
 import { useState, useMemo, useRef, useLayoutEffect } from "react";
 import { HighlightedJson } from "./HighlightedJson";
-import {
-  AlertCircle,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Copy,
-  Trash2,
-} from "lucide-react";
+import { AlertCircle, Check, Code, Copy, Trash2 } from "lucide-react";
 import styled from "styled-components";
 import { Button } from "./Button";
+import { JsonInputModal } from "./JsonInputModal";
 
 type JsonPrettyPrinterProps = {
   input: string;
@@ -25,9 +19,10 @@ export const JsonPrettyPrinter = ({
   setInput,
 }: JsonPrettyPrinterProps) => {
   const [copied, setCopied] = useState(false);
-  const [showInputArea, setShowInputArea] = useState(false);
   const parentRef = useRef(null);
   const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const { formatted, error } = useMemo(() => {
     if (!input.trim()) return { formatted: "", error: null };
@@ -54,23 +49,24 @@ export const JsonPrettyPrinter = ({
     if (!parentRef.current) return;
     const observer = new ResizeObserver((entries) => {
       setWidth(entries[0].contentRect.width);
+      setHeight(entries[0].contentRect.height);
     });
     observer.observe(parentRef.current);
     return () => observer.disconnect();
   }, []);
 
+  const openModal = () => setModalIsOpen(true);
+
+  const closeModal = () => setModalIsOpen(false);
+
   return (
     <FixedContainer ref={parentRef}>
-      <OutputContainer $width={width}>
+      <OutputContainer $width={width} $height={height}>
         <BorderedContainer>
           <OptionsContainer>
             <OutputTitle>Formatted output</OutputTitle>
             <ButtonContainer>
-              <Button
-                onClick={() => setShowInputArea(!showInputArea)}
-                label={showInputArea ? "Close JSON input" : "Open JSON input"}
-                icon={showInputArea ? ChevronUp : ChevronDown}
-              />
+              <Button onClick={openModal} label="Open JSON input" icon={Code} />
               <Button
                 onClick={handleCopy}
                 disabled={!formatted}
@@ -81,20 +77,12 @@ export const JsonPrettyPrinter = ({
             </ButtonContainer>
           </OptionsContainer>
 
-          <InputAreaContainer $showInputArea={showInputArea}>
-            <TextAreaOuterContainer>
-              <TextAreaContainer $showInputArea={showInputArea}>
-                <InputAreaLabel>JSON input</InputAreaLabel>
-                <StyledTextArea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  spellCheck={false}
-                  tabIndex={showInputArea ? 0 : -1}
-                  $error={error}
-                />
-              </TextAreaContainer>
-            </TextAreaOuterContainer>
-          </InputAreaContainer>
+          <JsonInputModal
+            modalIsOpen={modalIsOpen}
+            input={input}
+            setInput={setInput}
+            closeModal={closeModal}
+          />
 
           <JsonContainer>
             {error ? (
@@ -117,9 +105,10 @@ export const JsonPrettyPrinter = ({
 const FixedContainer = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
 `;
 
-const OutputContainer = styled.div<{ $width: number }>`
+const OutputContainer = styled.div<{ $width: number; $height: number }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -128,7 +117,7 @@ const OutputContainer = styled.div<{ $width: number }>`
     system-ui,
     -apple-system,
     sans-serif;
-  height: 90vh;
+  height: ${(props) => props.$height}px;
   position: fixed;
   top: 45;
   left: 50%;
@@ -189,48 +178,4 @@ const EmptyOutput = styled.div`
   padding: 16px;
   color: #6b7280;
   font-size: 13px;
-`;
-
-const InputAreaContainer = styled.div<{ $showInputArea: boolean }>`
-  display: grid;
-  grid-template-rows: ${(props) => (props.$showInputArea ? "1fr" : "0fr")};
-  transition: grid-template-rows 280ms cubic-bezier(0.4, 0, 0.2, 1);
-`;
-
-const InputAreaLabel = styled.label`
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-`;
-
-const TextAreaOuterContainer = styled.div`
-  overflow: hidden;
-  minheight: 0;
-`;
-
-const TextAreaContainer = styled.div<{ $showInputArea: boolean }>`
-  opacity: ${(props) => (props.$showInputArea ? 1 : 0)};
-  transform: ${(props) => (props.$showInputArea ? "translateY(0)" : "translateY(-4px)")};
-  transition: opacity 200ms ease
-    ${(props) => (props.$showInputArea ? "80ms" : "0ms")} transform 200ms ease
-    ${(props) => (props.$showInputArea ? "80ms" : "0ms")};
-  padding-top: 2px;
-`;
-
-const StyledTextArea = styled.textarea<{ $error: any }>`
-  width: 100%;
-  min-height: 100px;
-  resize: vertical;
-  padding: 10px 12px;
-  font-family: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace';
-  font-size: 13px;
-  line-height: 1.5;
-  border: 1px solid ${(props) => (props.$error ? "#F87171" : "#D1D5DB")};
-  border-radius: 8px;
-  outline: none;
-  box-sizing: border-box;
-  background: #fafafa;
-  color: #111827;
 `;
