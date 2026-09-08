@@ -2,46 +2,69 @@ import { useState } from "react";
 import Modal from "react-modal";
 import { Button } from "./Button";
 import styled from "styled-components";
+import { CircleCheck, CircleX, X } from "lucide-react";
 
 Modal.setAppElement("#root");
 
 type JsonInputModalProps = {
   modalIsOpen: boolean;
-  input: string;
+  characterJson: string;
   setInput: (newInput: string) => void;
   closeModal: () => void;
 };
 
 export const JsonInputModal = ({
   modalIsOpen,
-  input,
+  characterJson,
   setInput,
   closeModal,
 }: JsonInputModalProps) => {
-  const [error, setError] = useState(undefined);
+  const [inputJson, setInputJson] = useState(characterJson);
+  const [error, setError] = useState("");
 
   const onConfirmInput = () => {
-    // verify json
-    closeModal();
+    // TODO make useMemo in JsonPrettyPrinter a custom hook and use HighlightedJson in component?
+    try {
+      JSON.parse(inputJson);
+      setInput(inputJson);
+      closeModal();
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        setError(e.message);
+      } else {
+        setError("Invalid JSON");
+      }
+    }
   };
 
   const onCancel = () => closeModal();
 
+  const customStyles = {
+    content: {
+      backgroundColor: "var(--bg)",
+    },
+  };
+
   return (
-    <Modal isOpen={modalIsOpen}>
+    <Modal isOpen={modalIsOpen} style={customStyles}>
       <StyledContent>
         <TextAreaContainer>
-          <InputAreaLabel>JSON input</InputAreaLabel>
+          <TopContainer>
+            <InputAreaLabel>JSON input</InputAreaLabel>
+            <Button icon={X} label="" onClick={onCancel} />
+          </TopContainer>
           <StyledTextArea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            value={inputJson}
+            onChange={(e) => setInputJson(e.target.value)}
             spellCheck={false}
             $error={error}
           />
         </TextAreaContainer>
-
-        <Button onClick={onCancel} label="Cancel" />
-        <Button onClick={onConfirmInput} label="OK" />
+        <div>{error}</div>
+        <ButtonContainer>
+          <Button onClick={onCancel} label="Cancel" icon={CircleX} />
+          <Button onClick={onConfirmInput} label="OK" icon={CircleCheck} />
+        </ButtonContainer>
       </StyledContent>
     </Modal>
   );
@@ -52,7 +75,7 @@ const StyledContent = styled.div`
   left: 50%;
   right: auto;
   bottom: auto;
-  margin-right: -50%;
+  height: 100%;
 `;
 
 const InputAreaLabel = styled.label`
@@ -66,11 +89,20 @@ const InputAreaLabel = styled.label`
 const TextAreaContainer = styled.div`
   overflow: hidden;
   min-height: 0;
+  height: 95%;
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
 `;
 
 const StyledTextArea = styled.textarea<{ $error: any }>`
   width: 100%;
   min-height: 100px;
+  height: 100%;
   resize: vertical;
   padding: 10px 12px;
   font-family: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace';
@@ -80,6 +112,13 @@ const StyledTextArea = styled.textarea<{ $error: any }>`
   border-radius: 8px;
   outline: none;
   box-sizing: border-box;
-  background: #fafafa;
-  color: #111827;
+  background: #1f2430;
+  border: 1px solid #2d3340;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
 `;

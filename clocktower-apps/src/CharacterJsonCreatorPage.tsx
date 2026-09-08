@@ -97,7 +97,7 @@ export const CharacterJsonCreatorPage = () => {
     newValue: string,
     indexToUpdate: number,
   ) => {
-    const updatedSpecialAbilities = characterObject.specialAbilities?.map(
+    const updatedSpecialAbilities = characterObject.special?.map(
       (specialAbility, i) => {
         if (i === indexToUpdate) {
           return {
@@ -111,7 +111,7 @@ export const CharacterJsonCreatorPage = () => {
 
     setCharacterObject({
       ...characterObject,
-      specialAbilities: updatedSpecialAbilities,
+      special: updatedSpecialAbilities,
     });
   };
 
@@ -309,13 +309,13 @@ export const CharacterJsonCreatorPage = () => {
             displayTooltip={false}
           />
           <SpecialAbilities
-            specialAbilities={characterObject.specialAbilities ?? []}
+            specialAbilities={characterObject.special ?? []}
             addSpecialAbility={(newAbility: SpecialAbility) =>
-              addItemToArray("specialAbilities", newAbility)
+              addItemToArray("special", newAbility)
             }
             updateSpecialAbility={updateSpecialAbilities}
             removeSpecialAbility={(indexToRemove: number) =>
-              removeItemFromArray("specialAbilities", indexToRemove)
+              removeItemFromArray("special", indexToRemove)
             }
           />
           <JinxSection

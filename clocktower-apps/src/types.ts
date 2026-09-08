@@ -107,7 +107,7 @@ export type BotCCharacterArrayFields = {
   imageUrls?: Array<string>;
   reminders?: Array<string>;
   remindersGlobal?: Array<string>;
-  specialAbilities?: Array<SpecialAbility>;
+  special?: Array<SpecialAbility>;
   jinxes?: Array<Jinx>;
 };
 export type BotCCharacterArrayFieldName = keyof BotCCharacterArrayFields;
@@ -137,7 +137,7 @@ export const emptyBotCCharacter: BotCCharacter = {
   setup: false,
   reminders: [],
   remindersGlobal: [],
-  specialAbilities: [],
+  special: [],
 };
 
 const removeEmptyArrayValues = (character: BotCCharacter): BotCCharacter => ({
@@ -147,7 +147,7 @@ const removeEmptyArrayValues = (character: BotCCharacter): BotCCharacter => ({
   remindersGlobal: character.remindersGlobal?.filter(
     (reminder) => reminder.length > 0,
   ),
-  specialAbilities: character.specialAbilities?.map((ability) => ({
+  special: character.special?.map((ability) => ({
     ...ability,
     time: ability.time === nullSelectionValue ? undefined : ability.time,
     global: ability.global === nullSelectionValue ? undefined : ability.global,
@@ -174,9 +174,9 @@ const removeEmptyOptionalFields = (
       : undefined,
   firstNightReminder: character.firstNightReminder || undefined,
   otherNightReminder: character.otherNightReminder || undefined,
-  specialAbilities:
-    character.specialAbilities && character.specialAbilities.length > 0
-      ? character.specialAbilities
+  special:
+    character.special && character.special.length > 0
+      ? character.special
       : undefined,
   jinxes:
     character.jinxes && character.jinxes.length > 0

@@ -79,7 +79,7 @@ export const JsonPrettyPrinter = ({
 
           <JsonInputModal
             modalIsOpen={modalIsOpen}
-            input={input}
+            characterJson={input}
             setInput={setInput}
             closeModal={closeModal}
           />
