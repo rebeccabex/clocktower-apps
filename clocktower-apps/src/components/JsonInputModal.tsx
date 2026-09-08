@@ -37,21 +37,30 @@ export const JsonInputModal = ({
     }
   };
 
-  const onCancel = () => closeModal();
+  const onModalOpen = () => setInputJson(characterJson);
 
   const customStyles = {
     content: {
       backgroundColor: "var(--bg)",
+      maxWidth: "400px",
+      justifySelf: "center",
+      width: "100%",
     },
   };
 
   return (
-    <Modal isOpen={modalIsOpen} style={customStyles}>
+    <Modal
+      isOpen={modalIsOpen}
+      style={customStyles}
+      onRequestClose={closeModal}
+      onAfterOpen={onModalOpen}
+      closeTimeoutMS={500}
+    >
       <StyledContent>
         <TextAreaContainer>
           <TopContainer>
             <InputAreaLabel>JSON input</InputAreaLabel>
-            <Button icon={X} label="" onClick={onCancel} />
+            <Button icon={X} label="" onClick={closeModal} />
           </TopContainer>
           <StyledTextArea
             value={inputJson}
@@ -62,7 +71,7 @@ export const JsonInputModal = ({
         </TextAreaContainer>
         <div>{error}</div>
         <ButtonContainer>
-          <Button onClick={onCancel} label="Cancel" icon={CircleX} />
+          <Button onClick={closeModal} label="Cancel" icon={CircleX} />
           <Button onClick={onConfirmInput} label="OK" icon={CircleCheck} />
         </ButtonContainer>
       </StyledContent>

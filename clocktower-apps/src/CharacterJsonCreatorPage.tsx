@@ -359,6 +359,7 @@ const InputColumn = styled.div`
   border: 1px solid #000000;
   width: 50%;
   padding: 10px 0;
+  min-height: calc(-70px + 100vh);
 `;
 
 const OutputColumn = styled.div`
@@ -367,4 +368,5 @@ const OutputColumn = styled.div`
   border: 1px solid #000000;
   width: 50%;
   padding-bottom: 5px;
+  max-height: calc(-50px + 100vh);
 `;
