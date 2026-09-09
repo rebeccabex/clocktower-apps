@@ -191,3 +191,5 @@ export const convertCharacterToJson = (character: BotCCharacter) => {
 
   return JSON.stringify(modifiedCharacter, null, 2);
 };
+
+export type ToastType = "info" | "success" | "warning" | "error" | "default";

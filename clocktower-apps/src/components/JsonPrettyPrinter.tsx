@@ -4,12 +4,14 @@ import { AlertCircle, Check, Code, Copy, Trash2 } from "lucide-react";
 import styled from "styled-components";
 import { Button } from "./Button";
 import { JsonInputModal } from "./JsonInputModal";
+import type { ToastType } from "../types";
 
 type JsonPrettyPrinterProps = {
   input: string;
   indent?: number;
   clearCharacter: () => void;
   setInput: (newValue: string) => void;
+  setToastMessage: (message: string, type?: ToastType) => void;
 };
 
 export const JsonPrettyPrinter = ({
@@ -17,6 +19,7 @@ export const JsonPrettyPrinter = ({
   indent = 2,
   clearCharacter,
   setInput,
+  setToastMessage,
 }: JsonPrettyPrinterProps) => {
   const [copied, setCopied] = useState(false);
   const parentRef = useRef(null);
@@ -39,9 +42,10 @@ export const JsonPrettyPrinter = ({
     try {
       await navigator.clipboard.writeText(formatted);
       setCopied(true);
+      setToastMessage("JSON copied!", "success");
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      /* clipboard unavailable */
+      setToastMessage("Failed to copy", "error");
     }
   };
 
@@ -82,6 +86,7 @@ export const JsonPrettyPrinter = ({
             characterJson={input}
             setInput={setInput}
             closeModal={closeModal}
+            sendToastMessage={setToastMessage}
           />
 
           <JsonContainer>

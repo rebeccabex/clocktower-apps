@@ -12,6 +12,7 @@ import {
   type Jinx,
   type JinxFieldName,
   characterType,
+  type ToastType,
 } from "./types";
 import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
@@ -20,6 +21,7 @@ import { NightOrderSection } from "./NightOrderSection";
 import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
 import useCharacterState from "./hooks/useCharacterState";
 import { JsonPrettyPrinter } from "./components/JsonPrettyPrinter";
+import { toast, ToastContainer } from "react-toastify";
 
 export const CharacterJsonCreatorPage = () => {
   const [
@@ -140,6 +142,31 @@ export const CharacterJsonCreatorPage = () => {
     setCharacterObject(emptyBotCCharacter);
   };
 
+  const maximumNumberOfImageUrls =
+    characterObject.team === "traveler"
+      ? 3
+      : characterObject.team === "fabled" || characterObject.team === "loric"
+        ? 1
+        : 2;
+
+  const sendToastNotification = (
+    message: string,
+    type: ToastType = "default",
+  ) => {
+    switch (type) {
+      case "success":
+        return toast.success(message);
+      case "info":
+        return toast.info(message);
+      case "warning":
+        return toast.warning(message);
+      case "error":
+        return toast.error(message);
+      case "default":
+        return toast(message);
+    }
+  };
+
   return (
     <>
       <HeaderContainer>
@@ -215,7 +242,7 @@ export const CharacterJsonCreatorPage = () => {
             }
             addItem={() => addItemToArray("imageUrls", "")}
             removeItem={(index) => removeItemFromArray("imageUrls", index)}
-            maxNumberOfElements={3}
+            maxNumberOfElements={maximumNumberOfImageUrls}
             displayTooltip
             tooltipId="tooltip-image-urls"
             tooltipContent="For non-traveller player characters, the icons should be regular alignment and flipped alignment, for travellers they should be unaligned, good alignment and evil alignment"
@@ -332,8 +359,10 @@ export const CharacterJsonCreatorPage = () => {
             input={characterJsonString}
             clearCharacter={clearCharacter}
             setInput={setCharacterString}
+            setToastMessage={sendToastNotification}
           />
         </OutputColumn>
+        <ToastContainer autoClose={2000} position="bottom-right" theme="dark" />
       </PageLayout>
     </>
   );

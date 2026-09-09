@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { Button } from "./Button";
 import styled from "styled-components";
 import { CircleCheck, CircleX, X } from "lucide-react";
+import type { ToastType } from "../types";
 
 Modal.setAppElement("#root");
 
@@ -11,6 +12,7 @@ type JsonInputModalProps = {
   characterJson: string;
   setInput: (newInput: string) => void;
   closeModal: () => void;
+  sendToastMessage: (message: string, type?: ToastType) => void;
 };
 
 export const JsonInputModal = ({
@@ -18,6 +20,7 @@ export const JsonInputModal = ({
   characterJson,
   setInput,
   closeModal,
+  sendToastMessage,
 }: JsonInputModalProps) => {
   const [inputJson, setInputJson] = useState(characterJson);
   const [error, setError] = useState("");
@@ -29,10 +32,10 @@ export const JsonInputModal = ({
       setInput(inputJson);
       closeModal();
     } catch (e) {
+      sendToastMessage("Invalid JSON", "error");
       if (e instanceof SyntaxError) {
         setError(e.message);
       } else {
-        setError("Invalid JSON");
       }
     }
   };
