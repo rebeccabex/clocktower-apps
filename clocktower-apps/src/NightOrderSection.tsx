@@ -1,107 +1,69 @@
+import { useState } from "react";
+import { Button } from "./components/Button";
+import { NightOrderRow } from "./NightOrderRow";
+import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
+import type { BotCCharacter, BotCCharacterFieldName } from "./types";
+import { NightOrderInfoModal } from "./NightOrderInfoModal";
 import styled from "styled-components";
-import {
-  createDisplayValueForNightOrderSlot,
-  findNightOrderSlotByPosition,
-  type NightOrder,
-  type NightOrderSlot,
-} from "./nightOrderSlots";
-import { FieldLabel } from "./components/FieldLabel";
-import { TooltipWrapper } from "./components/TooltipWrapper";
 
-type BaseNightOrderSectionProps = {
-  nightOrder: NightOrder;
-  label: string;
-  nightOrderSlots: Array<NightOrderSlot>;
-  updateNightOrderValue: (newValue: number) => void;
-  currentValue: number;
+type NightOrderSectionProps = {
+  characterObject: BotCCharacter;
+  updateField: (updatedField: BotCCharacterFieldName, newValue: number) => void;
 };
-
-type NightOrderSectionProps = BaseNightOrderSectionProps &
-  (
-    | { displayTooltip: false; tooltipId?: never; tooltipContent?: never }
-    | { displayTooltip: true; tooltipId: string; tooltipContent: string }
-  );
 
 export const NightOrderSection = ({
-  nightOrder,
-  label,
-  nightOrderSlots,
-  updateNightOrderValue,
-  currentValue,
-  ...props
+  characterObject,
+  updateField,
 }: NightOrderSectionProps) => {
-  const currentNightOrderSlot = createDisplayValueForNightOrderSlot(
-    findNightOrderSlotByPosition(nightOrder, currentValue),
-  );
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const onChangeDropdownValue = (newValue: string) =>
-    updateNightOrderValue(Number.parseInt(newValue));
-
-  const onChangeNumericValue = (newValue: string) =>
-    updateNightOrderValue(Number.parseInt(newValue));
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
 
   return (
-    <NightOrderSectionContainer>
-      <LabelAndTooltipContainer>
-        <LabelContainer>{label}: </LabelContainer>
-        {props.displayTooltip && (
-          <TooltipWrapper
-            tooltipId={props.tooltipId}
-            tooltipContent={props.tooltipContent}
-          />
-        )}
-      </LabelAndTooltipContainer>
-      <ValueContainer>
-        <SelectContainer
-          id={label}
-          onChange={(e) => onChangeDropdownValue(e.target.value)}
-          value={currentNightOrderSlot}
-        >
-          {nightOrderSlots.map((value) => (
-            <option
-              key={`${label}-${createDisplayValueForNightOrderSlot(value)}`}
-              value={createDisplayValueForNightOrderSlot(value)}
-              disabled={value.unselectable}
-            >
-              {createDisplayValueForNightOrderSlot(value)}
-            </option>
-          ))}
-        </SelectContainer>
-        <InputContainer
-          type="number"
-          onChange={(e) => onChangeNumericValue(e.target.value)}
-          value={currentValue}
-          min={0}
-        />
-      </ValueContainer>
-    </NightOrderSectionContainer>
+    <>
+      <HeaderContainer>
+        <div>Night order</div>
+        <Button label="Help" onClick={openModal} />
+      </HeaderContainer>
+      <NightOrderRow
+        label="First night order"
+        nightOrderSlots={firstNightOrderSlots}
+        nightOrder="First"
+        currentValue={characterObject.firstNight ?? 0}
+        updateNightOrderValue={(newValue: number) =>
+          updateField("firstNight", newValue)
+        }
+        displayTooltip
+        tooltipId="tooltip-first-night-order"
+        tooltipContent="Set to 0 if the character doesn't wake on the first night"
+      />
+      <NightOrderRow
+        label="Other nights order"
+        nightOrderSlots={otherNightOrderSlots}
+        nightOrder="Other"
+        currentValue={characterObject.otherNight ?? 0}
+        updateNightOrderValue={(newValue: number) =>
+          updateField("otherNight", newValue)
+        }
+        displayTooltip
+        tooltipId="tooltip-other-night-order"
+        tooltipContent="Set to 0 if the character doesn't wake on nights other than the first"
+      />
+      <NightOrderInfoModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        modalTitle="Night Order information"
+        onCancel={closeModal}
+        onConfirm={closeModal}
+      />
+    </>
   );
 };
 
-const NightOrderSectionContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 5px 0;
-`;
-
-const LabelAndTooltipContainer = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const LabelContainer = styled(FieldLabel)`
-  width: 80%;
-`;
-
-const ValueContainer = styled.div`
-  width: 55%;
-`;
-
-const SelectContainer = styled.select`
-  width: 70%;
-`;
-
-const InputContainer = styled.input`
-  width: 20%;
+  justify-content: center;
+  gap: 10px;
 `;

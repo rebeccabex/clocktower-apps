@@ -17,11 +17,10 @@ import {
 import { SpecialAbilities } from "./SpecialAbilities";
 import { JinxSection } from "./JinxSection";
 import { Dropdown } from "./components/Dropdown";
-import { NightOrderSection } from "./NightOrderSection";
-import { firstNightOrderSlots, otherNightOrderSlots } from "./nightOrderSlots";
 import useCharacterState from "./hooks/useCharacterState";
 import { JsonPrettyPrinter } from "./components/JsonPrettyPrinter";
 import { toast, ToastContainer } from "react-toastify";
+import { NightOrderSection } from "./NightOrderSection";
 
 export const CharacterJsonCreatorPage = () => {
   const [
@@ -280,28 +279,8 @@ export const CharacterJsonCreatorPage = () => {
             tooltipContent="Reminder tokens that are selectable even when the character is not in play"
           />
           <NightOrderSection
-            label="First night order"
-            nightOrderSlots={firstNightOrderSlots}
-            nightOrder="First"
-            currentValue={characterObject.firstNight ?? 0}
-            updateNightOrderValue={(newValue: number) =>
-              updateField("firstNight", newValue)
-            }
-            displayTooltip
-            tooltipId="tooltip-first-night-order"
-            tooltipContent="Set to 0 if the character doesn't wake on the first night"
-          />
-          <NightOrderSection
-            label="Other nights order"
-            nightOrderSlots={otherNightOrderSlots}
-            nightOrder="Other"
-            currentValue={characterObject.otherNight ?? 0}
-            updateNightOrderValue={(newValue: number) =>
-              updateField("otherNight", newValue)
-            }
-            displayTooltip
-            tooltipId="tooltip-other-night-order"
-            tooltipContent="Set to 0 if the character doesn't wake on nights other than the first"
+            characterObject={characterObject}
+            updateField={updateField}
           />
           <TextField
             fieldName="firstNightReminder"

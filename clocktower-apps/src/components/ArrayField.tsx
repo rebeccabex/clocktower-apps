@@ -78,6 +78,7 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  gap: 5px;
 `;
 
 const FieldsContainer = styled.div`

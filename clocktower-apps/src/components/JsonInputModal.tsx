@@ -4,16 +4,15 @@ import { Button } from "./Button";
 import styled from "styled-components";
 import { CircleCheck, CircleX, X } from "lucide-react";
 import type { ToastType } from "../types";
+import type { BaseModalProps } from "./ModalWrapper";
 
 Modal.setAppElement("#root");
 
 type JsonInputModalProps = {
-  modalIsOpen: boolean;
   characterJson: string;
   setInput: (newInput: string) => void;
-  closeModal: () => void;
   sendToastMessage: (message: string, type?: ToastType) => void;
-};
+} & BaseModalProps;
 
 export const JsonInputModal = ({
   modalIsOpen,

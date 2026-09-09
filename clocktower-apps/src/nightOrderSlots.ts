@@ -60,7 +60,7 @@ export const firstNightOrderSlots: Array<NightOrderSlot> = [
   {
     startingPosition: 12,
     endingPosition: 14,
-    description: "Additional abilities",
+    description: "Roles that gain additional abilities",
     characters: ["Boffin", "Philosopher", "Alchemist"],
   },
   {
@@ -179,7 +179,7 @@ export const otherNightOrderSlots: Array<NightOrderSlot> = [
   },
   {
     startingPosition: 10,
-    description: "Additional abilities",
+    description: "Roles that gain additional abilities",
     characters: ["Philosopher"],
   },
   {
