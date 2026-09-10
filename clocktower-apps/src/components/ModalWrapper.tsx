@@ -9,6 +9,7 @@ export type BaseModalProps = {
   closeModal: () => void;
   onModalOpen?: () => void;
   closeTimeout?: number;
+  maxWidthPixels?: number;
 };
 
 type ModalWrapperProps = BaseModalProps & { children: ReactNode };
@@ -18,12 +19,13 @@ export const ModalWrapper = ({
   closeModal,
   onModalOpen,
   closeTimeout = 500,
+  maxWidthPixels = 400,
   children,
 }: ModalWrapperProps) => {
   const customStyles = {
     content: {
       backgroundColor: "var(--bg)",
-      maxWidth: "400px",
+      maxWidth: `${maxWidthPixels}px`,
       justifySelf: "center",
       width: "100%",
     },
@@ -92,7 +94,7 @@ const HeaderContainer = styled.div`
 `;
 
 const ModalTitle = styled.label`
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   color: #6b7280;
   text-transform: uppercase;

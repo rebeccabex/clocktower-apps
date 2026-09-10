@@ -27,6 +27,9 @@ export const findNightOrderSlotByPosition = (
 export const createDisplayValueForNightOrderSlot = (slot: NightOrderSlot) =>
   `${slot.startingPosition} ${slot.description}`;
 
+export const getCharactersToDisplay = (characters: Array<string>) =>
+  characters.slice(0, 3).join(", ");
+
 const DoesntWakeSlot: NightOrderSlot = {
   startingPosition: 0,
   description: "Doesn't wake",
@@ -34,11 +37,12 @@ const DoesntWakeSlot: NightOrderSlot = {
 
 export const firstNightOrderSlots: Array<NightOrderSlot> = [
   DoesntWakeSlot,
-  { startingPosition: 0, description: "dawn", unselectable: true },
+  { startingPosition: 0, description: "Dusk", unselectable: true },
   {
     startingPosition: 1,
     endingPosition: 4,
     description: "Setup Fabled/Lorics",
+    characters: ["Angel", "Buddhist", "Storm Catcher", "Toymaker"],
   },
   {
     startingPosition: 5,
@@ -152,7 +156,7 @@ export const firstNightOrderSlots: Array<NightOrderSlot> = [
 
 export const otherNightOrderSlots: Array<NightOrderSlot> = [
   DoesntWakeSlot,
-  { startingPosition: 0, description: "dawn", unselectable: true },
+  { startingPosition: 0, description: "Dusk", unselectable: true },
   {
     startingPosition: 1,
     endingPosition: 2,
